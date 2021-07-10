@@ -9,9 +9,11 @@ const getDefaultState = () => {
     did: 0.1,
     gender: '男',
     name: '',
+    nickname: '',
     email: '',
     birthday: '',
     avatar: '',
+    active: true,
     roles: [],
     rights: [],
     departments: []
@@ -33,6 +35,9 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
+  SET_NICKNAME: (state, nickname) => {
+    state.nickname = nickname
+  },
   SET_GENDER: (state, gender) => {
     state.gender = gender
   },
@@ -44,6 +49,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ACTIVE: (state, active) => {
+    state.active = active
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -69,10 +77,16 @@ const actions = {
 
         // const { name, avatar } = data
         let { rightList } = data
-        const { uname, gender, uid, birthday, lastdid, roleList, departmentList } = data
+        const { username, nickname, gender, user_id, birthday, lastdid, roleList, departmentList, active } = data
         const avatar = 'https://z3.ax1x.com/2021/04/11/cwKLLj.png'
         // roles must be a non-empty array
-        let roles = roleList.map(item => item.rolename)
+        // TODO: backend add more user info such as roles and rights
+        // let roles = roleList.map(item => item.rolename)
+        let roles = ['user']
+
+        if (!active) {
+          reject('账户未激活')
+        }
         if (!roles || roles.length <= 0) {
           // reject('getInfo: roles must be a non-null array!')
           console.log('getInfo: roles must be a non-null array!')
@@ -85,11 +99,13 @@ const actions = {
         }
 
         // if (!lastdid) lastdid=0.1
-        commit('SET_NAME', uname)
+        commit('SET_NAME', username)
+        commit('SET_NICKNAME', nickname)
         commit('SET_GENDER', gender ? '男' : '女')
         commit('SET_AVATAR', avatar)
+        commit('SET_ACTIVE', active)
         commit('SET_BIRTHDAY', birthday)
-        commit('SET_UID', uid)
+        commit('SET_UID', user_id)
         commit('SET_DID', lastdid)
         commit('SET_ROLES', roles)
         commit('SET_RIGHTS', rightList)
@@ -111,7 +127,7 @@ const actions = {
   register({ commit }, userInfo) {
     const { uname, email, password } = userInfo
     return new Promise((resolve, reject) => {
-      registrationSingle({ uname: uname.trim(), email: email.trim(), password: password }).then(response => {
+      registrationSingle({ username: uname.trim(), email: email.trim(), password: password }).then(response => {
         console.log('user register', response)
         // const { data } = response
         // commit("SET_EMAIL", data.email)
@@ -127,7 +143,7 @@ const actions = {
         // }
         //
         // commit('SET_ROLES', roles)
-        // commit('SET_NAME', uname)
+        // commit('SET_NAME', username)
         // commit('SET_AVATAR', avatar)
 
         Message({
@@ -152,7 +168,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roleList, uname/*, avatar*/, birthday, gender, email, lastdid, uid, rightList, departmentList } = data
+        const { roleList, username/*, avatar*/, birthday, gender, email, lastdid, user_id, rightList, departmentList } = data
         setEmail(email)
         let roles = roleList.map(item => item.rolename)
 
@@ -167,12 +183,12 @@ const actions = {
         commit('SET_AVATAR', 'https://z3.ax1x.com/2021/04/11/cwKLLj.png')
         // commit("SET_ROLES", ['admin'])
         commit('SET_ROLES', roles)
-        commit('SET_NAME', uname)
+        commit('SET_NAME', username)
         commit('SET_BIRTHDAY', birthday)
         commit('SET_EMAIL', data.email)
         commit('SET_GENDER', gender ? '男' : '女')
         // commit('SET_AVATAR', avatar)
-        commit('SET_UID', uid)
+        commit('SET_UID', user_id)
         commit('SET_DID', lastdid)
         commit('SET_RIGHTS', rightList)
         commit('SET_DEPARTMENTS', departmentList)

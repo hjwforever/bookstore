@@ -26,6 +26,13 @@ export function registrationSingle(data) {
   })
 }
 
+// 测试session
+export function testSession() {
+  return request({
+    url: '/user/testsession'
+  })
+}
+
 export function modifyUserInfo(data) {
   return request({
     url: '/user/modify',

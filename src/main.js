@@ -23,6 +23,8 @@ axios.defaults.withCredentials = true
 request.defaults.withCredentials = true
 Vue.use(ElementUI)
 
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API
+
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$request = request

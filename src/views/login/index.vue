@@ -59,13 +59,16 @@
         to="/register"
         style="color: dodgerblue"
       >去注册</router-link>
+      <br>
+      <br>
+      <el-button v-if="testSessionVisable" @click.native="handleTestSession">测试session</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validUName, validEmail } from '@/utils/validate'
-
+import { testSession } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -102,7 +105,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      testSessionVisable: false
     }
   },
   watch: {
@@ -112,6 +116,9 @@ export default {
       },
       immediate: true
     }
+  },
+  created() {
+    this.testSessionVisable = process.env.NODE_ENV === 'development'
   },
   methods: {
     showPwd() {
@@ -131,7 +138,7 @@ export default {
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(res => {
-              this.$router.push({ path: this.redirect || '/account' })
+              this.$router.push({ path: this.redirect || '/' })
               this.$router.go(0)
               this.loading = false
             })
@@ -143,6 +150,13 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    handleTestSession() {
+      testSession().then(res => {
+        console.log('测试session', res)
+      }).catch(err => {
+        console.log('测试session', err)
       })
     }
   }

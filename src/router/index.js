@@ -59,6 +59,32 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/items/:bookId',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'Items',
+  //       props: true,
+  //       component: () => import('@/components/Books/bookItem'),
+  //       meta: { title: '书籍详情', icon: 'book' }
+  //     }
+  //   ]
+  // },
+  {
+    path: '/items/:bookId',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Items',
+        props: true,
+        component: () => import('@/components/Books/bookItem'),
+        meta: { title: '书籍详情', icon: 'book' }
+      }
+    ]
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),

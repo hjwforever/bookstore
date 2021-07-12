@@ -53,6 +53,7 @@ export default {
       type: Array,
       required: true,
       default: () => [{
+        'bookId': 1,
         'title': '书籍名称1',
         'author': 'bookstore',
         'img': '//z3.ax1x.com/2021/04/11/cwKLLj.png?imageView2/1/w/80/h/80',
@@ -79,6 +80,10 @@ export default {
     goToDetails(item) {
       console.log('查看书籍', { ...item })
       // TODO: 跳转到书籍详情
+      // this.$router.push({ path: `/items/${Number.parseInt(item.bookId)}` })
+
+      this.$router.push({ name: 'Items', params: { bookId: item.bookId, book: item }})
+      // this.$router.push({ name: 'Items', params: { book: item }})
     }
   }
 }

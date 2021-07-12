@@ -32,11 +32,20 @@ export function testSession() {
   })
 }
 
+// 修改用户信息
 export function modifyUserInfo(data) {
   return request({
     url: '/user/modify',
     method: 'post',
     data
+  })
+}
+
+// 获取个人信息中心基本信息
+export function getUserCenter(params) {
+  return request({
+    url: '/user/personalcenter',
+    params
   })
 }
 

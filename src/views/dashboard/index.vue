@@ -65,6 +65,8 @@
 import { mapGetters } from 'vuex'
 import Category from '@/components/Category'
 import Books from '@/components/Books'
+// import { getIndexData } from '@/api/item'
+// import { getBookInfo } from '@/api/book'
 
 export default {
   name: 'Dashboard',
@@ -94,6 +96,7 @@ export default {
     // ]
     for (let i = 1; i < 10; i++) {
       testItems.push({
+        bookId: i,
         title: '书籍名称' + i,
         author: 'bookstore',
         img: '//z3.ax1x.com/2021/04/11/cwKLLj.png?imageView2/1/w/80/h/80',

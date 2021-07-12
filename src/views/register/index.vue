@@ -10,7 +10,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Register Form</h3>
+        <h3 class="title">注册页面</h3>
       </div>
 
       <el-form-item prop="uname">
@@ -20,8 +20,23 @@
         <el-input
           ref="uname"
           v-model="registerForm.uname"
-          placeholder="Username"
+          placeholder="账户名称"
           name="uname"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-form-item prop="nickname">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="nickname"
+          v-model="registerForm.nickname"
+          placeholder="用户昵称"
+          name="nickname"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -35,8 +50,25 @@
         <el-input
           ref="email"
           v-model="registerForm.email"
-          placeholder="Email"
+          placeholder="邮箱"
           name="email"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        >
+          <el-button slot="append" :disabled="disabled" type="primary" @click="validateEmail">获取验证码</el-button>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item v-show="sentValidateRequest" prop="validateCode">
+        <span class="svg-container">
+          <svg-icon icon-class="validateCode" />
+        </span>
+        <el-input
+          ref="validateCode"
+          v-model="registerForm.validateCode"
+          placeholder="验证码"
+          name="validateCode"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -140,13 +172,14 @@ export default {
     }
     return {
       rePassword: '',
+      sentValidateRequest: false,
       registerForm: {
-        user: {
-          uname: '',
-          email: '',
-          password: '',
-          rePassword: ''
-        }
+        uname: '',
+        nickname: '',
+        email: '',
+        validateCode: '',
+        password: '',
+        rePassword: ''
       },
       registerRules: {
         uname: [
@@ -166,6 +199,11 @@ export default {
       loading: false,
       passwordType: 'password',
       redirect: undefined
+    }
+  },
+  computed: {
+    disabled() {
+      return !(this.registerForm.email.length > 0 && validEmail(this.registerForm.email))
     }
   },
   watch: {
@@ -196,6 +234,7 @@ export default {
             .then(res => {
               console.log(res)
               // this.$router.push({ path: this.redirect || '/dashboard' })
+              this.$router.push({ path: '/login' })
               this.loading = false
             })
             .catch(err => {
@@ -206,6 +245,27 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    validateEmail() {
+      // TODO: 请求验证码
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(this.registerForm.email)
+          resolve({
+            data: 'success'
+          })
+        }, 200)
+      }).then(res => {
+        this.sentValidateRequest = true
+        const { data } = res
+        console.log(data)
+        this.$message.success('验证码发送成功')
+      }).catch(err => {
+        this.sentValidateRequest = false
+        const { data } = err
+        console.log(data)
+        this.$message.error('验证码发送失败')
       })
     }
   }
@@ -226,7 +286,7 @@ $cursor: #fff;
 /* reset element-ui css */
 .register-container {
   .el-input {
-    display: inline-block;
+    // display: inline-block;
     height: 47px;
     width: 85%;
 

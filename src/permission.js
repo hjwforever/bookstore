@@ -26,9 +26,20 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          const { roleList, rightList } = await store.dispatch('user/getInfo')
+          // const { roleList, privilegeList } = await store.dispatch('user/getInfo')
+          const roleList = [{
+            'role_id': 1,
+            'rolename': 'user',
+            'description': '普通用户'
+          }]
+          const privilegeList = [{
+            'priv_id': 1,
+            'privname': 'priv1',
+            'description': '权限1'
+          }]
+
           const roles = roleList.map(item => item.rolename)
-          const rights = rightList.map(item => item.rightname)
+          const rights = privilegeList.map(item => item.privname)
 
           // console.log('rolesDetails',roleList)
           // console.log('roles',roles)
@@ -57,8 +68,16 @@ router.beforeEach(async(to, from, next) => {
     // TODO: get default roles and rights from remote server
 
     // const { roleList, rightList } = await store.dispatch('user/getInfo')
-    const roles = ['tourist']
-    const rights = ['']
+    const roles = [{
+      'rolename': 'tourist',
+      'roleid': 9,
+      'description': '游客'
+    }].map(role => role.rolename)
+    const rights = [{
+      'priv_id': 1,
+      'privname': 'priv1',
+      'description': '权限1'
+    }].map(right => right.privname)
     // console.log('rolesDetails',roleList)
     // console.log('roles',roles)
     const accessRoutes = await store.dispatch('permission/generateRoutes', {

@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登录页面</h3>
       </div>
 
       <el-form-item prop="username">
@@ -138,12 +138,14 @@ export default {
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(res => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.$router.go(0)
+              console.log('登录成功')
+              this.$router.push({ path: this.redirect || '/dashboard' })
+              // this.$router.push({ path: '/dashboard' })
+              // this.$router.go(0)
               this.loading = false
             })
             .catch(err => {
-              console.log(err)
+              console.log('登录失败', err)
               this.loading = false
             })
         } else {

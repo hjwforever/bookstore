@@ -15,8 +15,7 @@ const getDefaultState = () => {
     avatar: '',
     active: true,
     roles: [],
-    rights: [],
-    departments: []
+    rights: []
   }
 }
 
@@ -58,9 +57,6 @@ const mutations = {
   },
   SET_RIGHTS: (state, rights) => {
     state.rights = rights
-  },
-  SET_DEPARTMENTS: (state, departments) => {
-    state.departments = departments
   }
 }
 
@@ -72,33 +68,49 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         console.log('user login', response)
         const { data } = response
-        commit('SET_EMAIL', data.email)
-        setEmail(data.email)
 
         // const { name, avatar } = data
-        let { rightList } = data
-        const { username, nickname, gender, user_id, birthday, lastdid, roleList, departmentList, active } = data
+        let { privilegeList } = data
+        const { username, nickname, gender, user_id, birthday, lastdid, roleList, active } = data
         const avatar = 'https://z3.ax1x.com/2021/04/11/cwKLLj.png'
         // roles must be a non-empty array
         // TODO: backend add more user info such as roles and rights
         // let roles = roleList.map(item => item.rolename)
-        let roles = ['user']
+        let roles = roleList
 
+        // TODO: 是否验证账户激活
         if (!active) {
+          Message({
+            message: '登录失败 账户未激活',
+            type: 'error',
+            duration: 3000
+          })
           reject('账户未激活')
+          return
         }
+
         if (!roles || roles.length <= 0) {
           // reject('getInfo: roles must be a non-null array!')
           console.log('getInfo: roles must be a non-null array!')
-          roles = ['user']
+          roles = [{
+            'role_id': 1,
+            'rolename': 'user',
+            'description': '普通用户'
+          }]
         }
 
-        if (!rightList || rightList.length <= 0) {
+        if (!privilegeList || privilegeList.length <= 0) {
           console.log('getInfo: rightList must be a non-null array!')
-          rightList = []
+          privilegeList = [{
+            'priv_id': 1,
+            'privname': 'priv1',
+            'description': '权限1'
+          }]
         }
 
         // if (!lastdid) lastdid=0.1
+        commit('SET_EMAIL', data.email)
+        setEmail(data.email)
         commit('SET_NAME', username)
         commit('SET_NICKNAME', nickname)
         commit('SET_GENDER', gender ? '男' : '女')
@@ -108,8 +120,7 @@ const actions = {
         commit('SET_UID', user_id)
         commit('SET_DID', lastdid)
         commit('SET_ROLES', roles)
-        commit('SET_RIGHTS', rightList)
-        commit('SET_DEPARTMENTS', departmentList)
+        commit('SET_RIGHTS', privilegeList)
 
         Message({
           message: '登录成功',
@@ -118,6 +129,7 @@ const actions = {
         })
         resolve()
       }).catch(error => {
+        console.log('登录失败', error)
         reject(error)
       })
     })
@@ -125,9 +137,9 @@ const actions = {
 
   // user register
   register({ commit }, userInfo) {
-    const { uname, email, password } = userInfo
+    const { uname, nickname, email, password } = userInfo
     return new Promise((resolve, reject) => {
-      registrationSingle({ username: uname.trim(), email: email.trim(), password: password }).then(response => {
+      registrationSingle({ username: uname.trim(), nickname: nickname.trim(), email: email.trim(), password: password }).then(response => {
         console.log('user register', response)
         // const { data } = response
         // commit("SET_EMAIL", data.email)
@@ -168,15 +180,21 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roleList, username/*, avatar*/, birthday, gender, email, lastdid, user_id, rightList, departmentList } = data
+        const { roleList, username/*, avatar*/, birthday, gender, email, lastdid, user_id, privilegeList } = data
         setEmail(email)
-        let roles = roleList.map(item => item.rolename)
+        // let roles = roleList.map(item => item.rolename)
+        let roles = roleList
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           // reject('getInfo: roles must be a non-null array!')
           console.log('getInfo: roles must be a non-null array!')
-          roles = ['user']
+          roles = [{
+            'role_id': 2,
+            'rolename': 'user',
+            'description': '普通用户'
+          }
+          ]
         }
 
         // commit("SET_NAME", data.name)
@@ -190,8 +208,7 @@ const actions = {
         // commit('SET_AVATAR', avatar)
         commit('SET_UID', user_id)
         commit('SET_DID', lastdid)
-        commit('SET_RIGHTS', rightList)
-        commit('SET_DEPARTMENTS', departmentList)
+        commit('SET_RIGHTS', privilegeList)
         resolve(data)
       }).catch(error => {
         reject(error)

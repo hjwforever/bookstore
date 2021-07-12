@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 登录
 export function login(params) {
   return request({
-    url: '/user/login',
+    url: '/user/account/login',
     method: 'post',
     params
   })
@@ -12,15 +12,14 @@ export function login(params) {
 // 登出
 export function logout() {
   return request({
-    url: '/signout',
-    method: 'post'
+    url: '/user/account/logout'
   })
 }
 
 // 注册
 export function registrationSingle(data) {
   return request({
-    url: '/register/single',
+    url: '/user/account/register',
     method: 'post',
     data
   })

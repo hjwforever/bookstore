@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import BookItem from '@/components/Books/BookItem'
+import BookItem from '../Books/BookItem'
 import { getRecommend } from '@/api/item'
 
 export default {

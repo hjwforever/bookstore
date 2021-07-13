@@ -1,6 +1,6 @@
 <template>
   <el-card body-style="background: #ca4040; color: white" @mouseenter.native="show" @mouseleave.native="hide">
-    <el-row type="flex" justify="space-around">
+    <el-row type="flex" justify="space-around" style="max-height: 1px">
       <el-col><i class="el-icon-menu" /></el-col>
       <!-- <el-col><span>全部商品分类</span></el-col> -->
       <el-col><router-link

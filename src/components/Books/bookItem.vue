@@ -1,8 +1,9 @@
 <template>
-  <div class="book-item">
-    <el-badge :value="book.status || randomBookTag(book.book_id)">
+  <div class="book-item" :style="bstyle">
+    <el-badge v-if="hasBadge" :value="book.status || randomBookTag(book.book_id)">
       <img :src="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer" class="book-img">
     </el-badge>
+    <img v-else :src="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer" class="book-img">
     <div class="book-detail">
       <el-button type="text" class="button" @click="goToDetails">{{ returnBookName(book.bookname) }}</el-button>
       <br><span class="book-author">{{ returnBookName(book.author) }}</span><br>
@@ -58,6 +59,14 @@ export default {
     bookStatus: {
       type: Array,
       default: () => ['已售罄', '抢购中', '火爆新品', '超值促销']
+    },
+    bstyle: {
+      type: String,
+      default: ''
+    },
+    hasBadge: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

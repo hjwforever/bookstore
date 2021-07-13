@@ -26,3 +26,12 @@ export function setJSessionID(key) {
 export function removeJSessionID() {
   return Cookies.remove(session)
 }
+
+export function resetState() {
+  const _removeEmail = removeEmail()
+  const _removeJSessionID = removeJSessionID()
+  return {
+    _removeEmail,
+    _removeJSessionID
+  }
+}

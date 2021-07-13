@@ -4,19 +4,24 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import getPageTitle from '@/utils/get-page-title'
-import { getEmail } from '@/utils/auth'
+import { getEmail, resetState } from '@/utils/auth'
+import { constantRoutes } from '@/router'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/', '/dashboard', '/search', '/login', '/register'] // no redirect whitelist
+const routes = constantRoutes.filter(item => item.path && item.path !== '/').map(item => item.path.split(':')[0])
+
+const whiteList = [...routes, '/', '/dashboard', '/search', '/login', '/register'] // no redirect whitelist
+console.log(whiteList)
 
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
 
-  const currentEmail = getEmail()
-
-  if (currentEmail) {
+  // const currentEmail = getEmail()
+  const username = store.getters.name
+  // if (currentEmail) {
+  if (username) {
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
@@ -41,6 +46,8 @@ router.beforeEach(async(to, from, next) => {
           const roles = roleList.map(item => item.rolename)
           const rights = privilegeList.map(item => item.privname)
 
+          store.commit('user/SET_ROLES', roles)
+          store.commit('user/SET_RIGHTS', privilegeList)
           // console.log('rolesDetails',roleList)
           // console.log('roles',roles)
 
@@ -67,6 +74,8 @@ router.beforeEach(async(to, from, next) => {
   } else {
     // TODO: get default roles and rights from remote server
 
+    store.dispatch('user/resetToken')
+    resetState()
     // const { roleList, rightList } = await store.dispatch('user/getInfo')
     const roles = [{
       'rolename': 'tourist',
@@ -78,6 +87,10 @@ router.beforeEach(async(to, from, next) => {
       'privname': 'priv1',
       'description': '权限1'
     }].map(right => right.privname)
+
+    store.commit('user/SET_ROLES', roles)
+    store.commit('user/SET_RIGHTS', rights)
+
     // console.log('rolesDetails',roleList)
     // console.log('roles',roles)
     const accessRoutes = await store.dispatch('permission/generateRoutes', {

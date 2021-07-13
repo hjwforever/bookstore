@@ -27,7 +27,7 @@
               <el-dropdown-item>Github</el-dropdown-item>
             </a>
             <el-dropdown-item divided @click.native="logout">
-              <span style="display: block">{{ avatar ? 'Log Out' : 'Log In' }}</span>
+              <span style="display: block">{{ name ? 'Log Out' : 'Log In' }}</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -51,7 +51,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'user'])
+    ...mapGetters(['sidebar', 'avatar', 'name', 'user'])
   },
   created() {
   },
@@ -60,10 +60,15 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      if (this.avatar) {
+      console.log('1')
+      if (this.name) {
+        console.log('2')
         await this.$store.dispatch('user/logout')
+      } else {
+        console.log('3')
+        this.$router.push({ path: `/login?redirect=${this.$route.fullPath}` })
+        console.log(this.$route.fullPath)
       }
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

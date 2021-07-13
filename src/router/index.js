@@ -75,12 +75,13 @@ export const constantRoutes = [
   {
     path: '/items/:bookId',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: '',
         name: 'Items',
         props: true,
-        component: () => import('@/components/Books/bookItem'),
+        component: () => import('@/components/Books/BookDetail'),
         meta: { title: '书籍详情', icon: 'book' }
       }
     ]

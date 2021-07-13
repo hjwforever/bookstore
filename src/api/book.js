@@ -17,9 +17,6 @@ export function getSearch(params) {
 
 // 获取商品详情
 // 路径参数书籍编号：book_id
-export function getBookInfo(params) {
-  return request({
-    url: '/item/detail',
-    params
-  })
+export function getBookInfo(book_id) {
+  return request('/item/detail/' + book_id)
 }

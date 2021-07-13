@@ -10,10 +10,10 @@
     <el-collapse-transition>
       <div v-if="visible">
         <br>
-        <el-row v-for="item in categories" :key="item.value.cate_id">
+        <el-row v-for="item in categories" :key="item.cate_id">
           <el-popover
             placement="right-start"
-            width="200"
+            width="400"
             trigger="hover"
             :visible-arrow="false"
           >
@@ -21,24 +21,34 @@
               <el-row v-for="(subCategory, index) in content.children" :key="subCategory.cate_id">
                 <el-divider v-if="index!==0" />
                 <el-row>
-                  <el-row class="popover-title">{{ subCategory.label }}</el-row>
-                  <el-row v-if="subCategory.children.length>0" type="flex">
-                    <el-col v-for="(_subCategory, index1) in subCategory.children" :key="_subCategory.value.cate_id" class="subitem"><el-divider v-if="index1!=0" direction="vertical" /><router-link
-                      :to="'/search?categoryId='+_subCategory.value.cate_id"
-                    >{{ _subCategory.label }}</router-link></el-col>
+                  <el-row class="popover-title">{{ subCategory.catename }}</el-row>
+                  <el-row v-if="subCategory.children.length>0" type="flex" justify="space-between">
+                    <div v-for="_subCategory in subCategory.children" :key="_subCategory.cate_id">
+                      <!-- <el-col>
+                        <el-divider v-if="index1!=0" direction="vertical" /></el-col> -->
+                      <el-col>
+                        <!-- <router-link
+                          :to="'/search?categoryId='+_subCategory.cate_id"
+                        >{{ _subCategory.catename }}</router-link> -->
+                        <router-link
+                          :to="'/search?categoryId='+_subCategory.cate_id"
+                        ><el-button type="text">{{ _subCategory.catename }}</el-button>
+                        </router-link>
+                      </el-col>
+                    </div>
                   </el-row>
                 </el-row>
               </el-row>
             </template>
             <div slot="reference" @mouseenter.prevent="hadlePopoverShow($event)">
-              <div v-show="false">{{ item.value }}</div>
+              <div v-show="false">{{ item }}</div>
               <span><router-link
-                :to="'/search?categoryId='+item.value.cate_id"
-              >{{ item.label }}</router-link></span>
+                :to="'/search?categoryId='+item.cate_id"
+              >{{ item.catename }}</router-link></span>
               <el-row v-if="item.children" type="flex">
-                <el-col v-for="item1 in item.children" :key="item1.value.cate_id" class="subitem"><router-link
-                  :to="'/search?categoryId='+item1.value.cate_id"
-                >{{ item1.label }}</router-link></el-col>
+                <el-col v-for="item1 in item.children" :key="item1.cate_id" class="subitem"><router-link
+                  :to="'/search?categoryId='+item1.cate_id"
+                >{{ item1.catename }}</router-link></el-col>
               </el-row>
             </div>
           </el-popover>
@@ -69,14 +79,14 @@ export default {
     }
   },
   created() {
-    console.log('categories :', this.categories)
-    console.log('foldable :', this.foldable)
+    // console.log('categories :', this.categories)
+    // console.log('foldable :', this.foldable)
   },
   methods: {
     hadlePopoverShow(event) {
       const item = JSON.parse(event.currentTarget.firstElementChild.innerHTML)
       // console.log(item)
-      const categoryList = { ...this.categories.find(_item => _item.value.cate_id === item.cate_id) }
+      const categoryList = { ...this.categories.find(_item => _item.cate_id === item.cate_id) }
       // console.log({ ...categoryList })
       // TODO: 获取第三级分类 或者直接渲染第三级分类
       this.content = categoryList

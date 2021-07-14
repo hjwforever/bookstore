@@ -42,7 +42,23 @@ export function pay(data) {
 // 取消订单
 // 订单id：long order_id
 export function cancelOrder(data) {
-  return request.post('/user/order/cancelOrder', { data })
+  return request({
+    url: '/user/order/cancelOrder',
+    method: 'post',
+    data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ],
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }})
 }
 
 // 商品发货
@@ -55,7 +71,19 @@ export function ship(data) {
 // 确认收货
 // 订单id：long order_id
 export function confirmReceipt(data) {
-  return request.post('/user/order/confirmReceipt', { data })
+  return request.post('/user/order/confirmReceipt', { data, transformRequest: [
+    function(data) {
+      let ret = ''
+      for (const it in data) {
+        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+      }
+      ret = ret.substring(0, ret.lastIndexOf('&'))
+      return ret
+    }
+  ],
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }})
 }
 
 export const ORDER_STATUS = {

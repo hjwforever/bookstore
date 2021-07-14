@@ -49,3 +49,14 @@ export function getCategory(params) {
 export function search(params) {
   return request.get('/item/search', { params })
 }
+
+// 附件上传
+export const uploadFiles = query => {
+  return request({
+    // url: '/list-lib/uploadFileResult.json',
+    // method: 'get',
+    url: '/fileList/uploadFiles',
+    method: 'post',
+    data: query // 附件上传只能用data 来传数据,后端用@RequestBody
+  })
+}

@@ -88,6 +88,7 @@
 import { search, getCategory } from '@/api/item'
 import BookItem from '@/components/Books/BookItem.vue'
 import Category from '@/components/Category'
+import merge from 'webpack-merge'
 
 export default {
   name: 'Search',
@@ -250,7 +251,15 @@ export default {
   },
   computed: {
   },
+  watch: {
+    search: function(newVal, oldVal) {
+      const query = this.$route.query
+      Object.assign(query, { search: newVal })
+      this.$router.replace({ query })
+    }
+  },
   created() {
+    this.search = this.$route.query.search
     console.log('route params', this.$route.query)
     console.log('route params categoryId', this.$route.query.categoryId)
     this.searchBooks(this.pageNum, this.$route.query.categoryId)
@@ -275,7 +284,7 @@ export default {
       console.log('搜索内容', this.search)
       search({
         isContentCategory: this.isContentCategory,
-        keyword: this.search,
+        keyword: this.search || this.$route.query.search,
         cate_id: categoryId !== -1 ? Number(categoryId) : (Number(this.$route.categoryId) || -1),
         lowPrice: this.minPrice || 0,
         highPrice: this.maxPrice || 9999999,

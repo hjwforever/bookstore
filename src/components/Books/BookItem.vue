@@ -25,8 +25,8 @@ export default {
   name: 'BookItem',
   props: {
     bookId: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '0'
     },
     book: {
       type: Object,
@@ -84,7 +84,7 @@ export default {
       this.$router.push({ name: 'Items', params: { bookId: this.book.book_id, book: this.book }})
     },
     returnBookName(name) {
-      return name.length < 14 ? name : name.slice(0, 10) + '...'
+      return String(name).length < 14 ? name : name.slice(0, 10) + '...'
     },
     geneRate(item) {
       if (Number(item.rate) > 0) {

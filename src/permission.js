@@ -46,6 +46,7 @@ router.beforeEach(async(to, from, next) => {
           const roles = roleList.map(item => item.rolename)
           const rights = privilegeList.map(item => item.privname)
 
+          await store.dispatch('user/resetToken')
           store.commit('user/SET_ROLES', roles)
           store.commit('user/SET_RIGHTS', privilegeList)
           // console.log('rolesDetails',roleList)

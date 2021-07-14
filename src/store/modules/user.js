@@ -15,7 +15,8 @@ const getDefaultState = () => {
     avatar: '',
     active: true,
     roles: [],
-    rights: []
+    rights: [],
+    addressesList: []
   }
 }
 
@@ -57,6 +58,9 @@ const mutations = {
   },
   SET_RIGHTS: (state, rights) => {
     state.rights = rights
+  },
+  SET_ADDRESS: (state, addressesList) => {
+    state.addressesList = addressesList
   }
 }
 
@@ -70,7 +74,7 @@ const actions = {
         const { data } = response
 
         // const { name, avatar } = data
-        let { privilegeList } = data
+        let { privilegeList, addressesList } = data
         const { username, nickname, gender, user_id, birthday, lastdid, roleList, active } = data
         const avatar = 'https://z3.ax1x.com/2021/04/11/cwKLLj.png'
         // roles must be a non-empty array
@@ -108,6 +112,11 @@ const actions = {
           }]
         }
 
+        if (!addressesList || addressesList.length <= 0) {
+          addressesList = []
+          addressesList.push({ 'addr_id': 2, 'user_id': user_id, 'phone': '18321654113', 'zip_code': '100086', 'receiver_state': '北京', 'receiver_city': '北京市', 'receiver_district': '海淀区', 'detail_address': '上园村3号', 'country': '中国', 'default_addr': true })
+        }
+
         // if (!lastdid) lastdid=0.1
         commit('SET_EMAIL', data.email)
         setEmail(data.email)
@@ -121,6 +130,7 @@ const actions = {
         commit('SET_DID', lastdid)
         commit('SET_ROLES', roles)
         commit('SET_RIGHTS', privilegeList)
+        commit('SET_ADDRESS', addressesList)
 
         Message({
           message: '登录成功',
@@ -180,7 +190,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roleList, username/*, avatar*/, birthday, gender, email, lastdid, user_id, privilegeList } = data
+        const { roleList, username, nickname/*, avatar*/, birthday, gender, email, lastdid, user_id, privilegeList, addressesList } = data
         setEmail(email)
         // let roles = roleList.map(item => item.rolename)
         let roles = roleList
@@ -202,6 +212,7 @@ const actions = {
         // commit("SET_ROLES", ['admin'])
         commit('SET_ROLES', roles)
         commit('SET_NAME', username)
+        commit('SET_NICKNAME', nickname)
         commit('SET_BIRTHDAY', birthday)
         commit('SET_EMAIL', data.email)
         commit('SET_GENDER', gender ? '男' : '女')
@@ -209,6 +220,8 @@ const actions = {
         commit('SET_UID', user_id)
         commit('SET_DID', lastdid)
         commit('SET_RIGHTS', privilegeList)
+        commit('SET_ADDRESS', addressesList)
+
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -219,12 +232,13 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout().then(() => {
+      logout().then(res => {
         Message({
           message: '登出成功',
           type: 'success',
           duration: 3000
         })
+        console.log('登出成功', res)
         removeEmail()
         removeJSessionID()
         resetRouter()

@@ -18,10 +18,12 @@ import '@/icons'
 import '@/permission'
 
 import { hasAnyRight, RIGHTS } from '@/utils/permission'
+import VueLazyload from 'vue-lazyload'
 
 axios.defaults.withCredentials = true
 request.defaults.withCredentials = true
 Vue.use(ElementUI)
+Vue.use(VueLazyload)
 
 axios.defaults.baseURL = process.env.VUE_APP_BASE_API
 

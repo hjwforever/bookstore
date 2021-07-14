@@ -10,12 +10,6 @@
         </el-input>
       </el-col>
     </el-row>
-    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-    </el-breadcrumb> -->
     <!-- <el-row type="flex">
       <el-col>
         <el-switch v-model="topSearchVisible" />
@@ -66,12 +60,6 @@
         </el-input>
       </el-row>
     </el-button-group>
-    <!-- <el-tabs v-model="activeName" class="button-group">
-      <el-tab-pane label="用户管理" name="first" />
-      <el-tab-pane label="配置管理" name="second" />
-      <el-tab-pane label="角色管理" name="third" />
-      <el-tab-pane label="定时任务补偿" name="fourth" />
-    </el-tabs> -->
     <el-row type="flex" :gutter="20" style="flex-wrap: wrap;" class="search-list">
       <el-col v-for="(book,index) in books" :key="index" :span="4" :xs="6" :sm="4" :xl="3" class="book-item">
         <el-card shadow="hover">
@@ -358,7 +346,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("//unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css");
 .search-main {
   background: #f7f7f7;
 }

@@ -49,18 +49,10 @@ export function getUserCenter(params) {
   })
 }
 
-// 获取某部门下的用户列表
-// 返回 Page<User>
-export function getUserList({
-  did,
-  isExpand = true,
-  pageNum = 1,
-  pageSize = 10
-}) {
-  return request({
-    url: `/user/users_in_department?did=${did}&isExpand=${isExpand}&pageNum=${pageNum}&pageSize=${pageSize}`,
-    method: 'get'
-  })
+// 获取用户列表
+// 返回 List<User>
+export function getUserList(params) {
+  return request.get('/user/account/userlist', { params })
 }
 
 // 获取所有用户列表

@@ -20,13 +20,13 @@
       <div class="user-message-item">
         <label class="message-label">角色：</label>
         <label class="message-content">
-          <span v-for="role in user.roles" :key="role">{{ role }}</span>
+          <span v-for="(role,index) in user.roles" :key="index">{{ role }}</span>
         </label>
       </div>
       <div class="user-message-item">
         <label class="message-label">权限：</label>
         <label class="message-content">
-          <span v-for="right in user.rights" :key="right.rightid">{{ right.description }}  </span>
+          <span v-for="(right,index) in user.rights" :key="index">{{ right.description }}  </span>
         </label>
       </div>
       <!-- <div class="user-message-item">

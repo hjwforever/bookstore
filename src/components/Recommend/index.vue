@@ -8,7 +8,7 @@
       <el-col v-for="(book,index) in recommendBooks" :key="index" :push="1" :span="4" :xs="12" :sm="12" :lg="6">
         <BookItem :book="book" />
         <!-- <el-badge :value="book.status || '抢购中'">
-          <img :src="book.img" alt="">
+          <img :v-lazy="book.img" alt="">
         </el-badge>
         <div class="book-detail">
           <el-button type="text" class="button" @click="goToDetails(book)">{{ book.title }}</el-button>

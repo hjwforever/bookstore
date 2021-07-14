@@ -14,7 +14,7 @@
               <el-row type="flex" justify="space-around" style="align-items: center;">
                 <el-col>
                   <img :width="100" :src="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer">
-                  <!-- <img :src="book.img" :alt="book.bookname"> -->
+                  <!-- <img :v-lazy="book.img" :alt="book.bookname"> -->
                 </el-col>
                 <el-col>
                   <el-row>

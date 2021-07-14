@@ -47,18 +47,7 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/account',
-    component: Layout,
-    children: [
-      {
-        path: '',
-        name: 'Account',
-        component: () => import('@/views/account'),
-        meta: { title: '个人信息', icon: 'id-card' }
-      }
-    ]
-  },
+
   // {
   //   path: '/items/:bookId',
   //   component: Layout,
@@ -94,6 +83,28 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
+  {
+    path: '/account',
+    name: 'PersonCenter',
+    component: Layout,
+    redirect: '/account/center',
+    meta: { title: '个人中心', icon: 'user-manage' },
+    children: [
+      {
+        path: 'profile',
+        name: 'Account',
+        component: () => import('@/views/account'),
+        meta: { title: '个人信息', icon: 'id-card' }
+      },
+      {
+        path: 'order',
+        name: 'Order',
+        props: true,
+        component: () => import('@/views/order'),
+        meta: { title: '订单管理', icon: 'order-manage' }
+      }
+    ]
+  },
   // {
   //   path: '/',
   //   component: Layout,

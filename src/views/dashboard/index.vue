@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <!-- <img :v-lazy="qrcodeImg" alt="qrcode"> -->
     <el-row :gutter="10">
       <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
         <Category :categories="categories" style="max-height: 250px" />
@@ -8,7 +9,7 @@
         <el-carousel height="250px">
           <el-carousel-item v-for="item in img1" :key="item">
             <!-- <h3 class="small">{{ item }}</h3> -->
-            <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
+            <img :v-lazy="item" fit="fit" alt="" referrerPolicy="no-referrer">
           </el-carousel-item>
         </el-carousel>
       </el-col>
@@ -44,7 +45,7 @@
       <Books :books="categoryBooks.value" :has-leaderboard="true">
         <div slot="header" class="content-header">
           <span>{{ categoryBooks.label }}</span>
-          <!-- <img :src="headerImages[index].value" :alt="headerImages[index].label" referrerPolicy="no-referrer"> -->
+          <!-- <img :v-lazy="headerImages[index].value" :alt="headerImages[index].label" referrerPolicy="no-referrer"> -->
         </div>
       </Books>
     </div>
@@ -124,6 +125,7 @@ export default {
       recommendNum: 4,
       cate_top: 3,
       book_top: 10,
+      qrcodeImg: '',
       recommandBooks: [],
       popularCategories: [],
       headerImages: [
@@ -477,6 +479,11 @@ export default {
     // })
   },
   methods: {
+    testQRCode() {
+      this.$request.post('', {
+
+      })
+    },
     translateToTree(list) {
       console.log(list)
     },

@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <!-- <el-col :span="14">
-      <img :src="book.img" :alt="book.description">
+      <img :v-lazy="book.img" :alt="book.description">
     </el-col>
     <el-col :span="10">
       <span>价格: {{ book.price }}</span>

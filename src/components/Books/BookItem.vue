@@ -1,7 +1,7 @@
 <template>
   <div class="book-item" :style="bstyle">
     <el-badge v-if="hasBadge" :value="book.status || randomBookTag(book.book_id)">
-      <img :src="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer" class="book-img">
+      <img :v-lazy="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer" class="book-img">
     </el-badge>
     <img v-else :src="book.s_image" :alt="book.bookname" referrerPolicy="no-referrer" class="book-img">
     <div class="book-detail">

@@ -2,10 +2,10 @@
   <div class="search-main">
     <el-row style="position: absolute; z-index: 999; width:100%; max-height: 250px; top: 0;">
       <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6" style="margin-top: 19px">
-        <Category foldable :categories="categories" style="max-height: 250px;" />
+        <Category foldable :categories="categories" style="max-height: 250px;" @clicked="handleClicked" />
       </el-col>
       <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-        <el-input v-model="search" placeholder="请输入搜索内容" class="search-input" @keyup.enter.native="searchBooks">
+        <el-input v-model="search" clearable placeholder="请输入搜索内容" class="search-input" @keyup.enter.native="searchBooks">
           <el-button slot="append" type="primary" icon="el-icon-search" style="color: blue" @click.native="searchBooks" />
         </el-input>
       </el-col>
@@ -33,34 +33,47 @@
         @next-click="searchBooks"
       /></el-col>
     </el-row> -->
-    <el-row style="position: absolute; margin-top: -25px">
+    <el-row v-if="currentCategoriesList.length>0" style="position: absolute; margin-top: -25px">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>
-          <el-dropdown>
+        <el-breadcrumb-item :to="{ path: '/' }">全部分类</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="(category, index) in currentCategoriesList" :key="index">
+          <el-dropdown @mouseenter.native="chooseDrop(index)" @mouseleave.native="unChooseDrop">
             <span class="el-dropdown-link">
-              下拉菜单<i class="el-icon-arrow-right el-icon--right" />
+              {{ category.catename }}<i :class="unfoldIndex==index?'el-icon-arrow-up el-icon--right':'el-icon-arrow-down el-icon--right'" />
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-row style="max-width: 250px">
-                <el-col v-for="(item,index) in 14" :key="index" :span="6">
-                  <el-button type="text" size="mini" class="category-item" :style="index==1?'color: red':''">Test</el-button>
+                <el-col v-for="(item,_index) in levelMap[index]" :key="_index" :span="levelMap[index].length < 6 ? 12:6">
+                  <el-button type="text" class="category-item" :style="levelList.includes(item.cate_id)?'color: red':''" @click.native="searchBooks(1,item.cate_id)">{{ item.catename }}</el-button>
                 </el-col>
               </el-row>
-              <!-- <el-dropdown-item divided style="color: white">
-                <el-button type="text" style="color: white">蚵仔煎1</el-button>
-                <el-button type="text">蚵仔煎2</el-button>
-                <el-button type="text">蚵仔煎3</el-button>
-              </el-dropdown-item> -->
             </el-dropdown-menu>
           </el-dropdown>
         </el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
-    <el-row type="flex" :gutter="20" style="flex-wrap: wrap; margin-top: 100px" class="search-list">
-      <el-col v-for="(book,index) in books" :key="book.book_id" :span="4" :xs="6" :sm="4" :xl="3" class="book-item">
+    <div style="margin-top: 100px" />
+    <el-button-group class="button-group">
+      <el-button icon="el-icon-bell" :style="activeName=='default'?'color: white; background-color: #c62e2d':''" @click="sort('default')">综合排序</el-button>
+      <el-button icon="el-icon-price-tag" :style="activeName=='price'?'color: white; background-color: #c62e2d':''" @click="sort('price')">价格</el-button>
+      <el-button icon="el-icon-alarm-clock" :style="activeName=='time'?'color: white; background-color: #c62e2d':''" @click="sort('time')">上架时间</el-button>
+      <el-row type="flex" class="price-group">
+        <el-input v-model="minPrice" suffix-icon="el-icon-minus" placeholder="最低价格" size="small" class="price-input" @keyup.enter.native="searchBooks">
+          <template slot="prepend">￥</template>
+        </el-input>
+        <el-input v-model="maxPrice" placeholder="最高价格" size="small" class="price-input" @keyup.enter.native="searchBooks">
+          <template slot="prepend">￥</template>
+        </el-input>
+      </el-row>
+    </el-button-group>
+    <!-- <el-tabs v-model="activeName" class="button-group">
+      <el-tab-pane label="用户管理" name="first" />
+      <el-tab-pane label="配置管理" name="second" />
+      <el-tab-pane label="角色管理" name="third" />
+      <el-tab-pane label="定时任务补偿" name="fourth" />
+    </el-tabs> -->
+    <el-row type="flex" :gutter="20" style="flex-wrap: wrap;" class="search-list">
+      <el-col v-for="(book,index) in books" :key="index" :span="4" :xs="6" :sm="4" :xl="3" class="book-item">
         <el-card shadow="hover">
           <BookItem :book="geneRate(book)" bstyle="height: 315px;width: 185px;" />
         </el-card>
@@ -233,12 +246,21 @@ export default {
       ],
       books: [],
       mockBooks: mockBooks,
+      activeName: 1,
       topSearchVisible: true,
       pageSize: 72,
       pageNum: 1,
+      minPrice: undefined,
+      maxPrice: undefined,
       totalItemsNum: 999,
-      isContentCategory: true
+      isContentCategory: true,
+      unfoldIndex: -1,
+      currentCategoriesList: [],
+      levelMap: [],
+      levelList: []
     }
+  },
+  computed: {
   },
   created() {
     console.log('route params', this.$route.query)
@@ -263,21 +285,33 @@ export default {
     searchBooks(pageNum = 1, categoryId = -1) {
       this.pageNum = Number(pageNum) || 1
       console.log('搜索内容', this.search)
-      // highPrice: 999999,
       search({
         isContentCategory: this.isContentCategory,
         keyword: this.search,
-        cate_id: categoryId || -1,
-        lowPrice: 0,
+        cate_id: categoryId !== -1 ? Number(categoryId) : (Number(this.$route.categoryId) || -1),
+        lowPrice: this.minPrice || 0,
+        highPrice: this.maxPrice || 9999999,
         pageNum: this.pageNum,
         pageSize: this.pageSize
       }).then(res => {
         console.log(res)
         const { currentCategoriesList, levelMap, searchResultPage } = res.data
-        console.log('currentCategoriesList', currentCategoriesList)
-        console.log('levelMap', levelMap)
+        this.currentCategoriesList = currentCategoriesList
+        this.levelList = []
+        this.levelMap = []
+        for (const key in levelMap) {
+          if (Object.hasOwnProperty.call(levelMap, key)) {
+            const element = levelMap[key]
+            this.levelList.push(Number(key))
+            this.levelMap.push(element)
+          }
+        }
+        // this.levelMap = levelMap
+        console.log('currentCategoriesList', this.currentCategoriesList)
+        console.log('levelMap', this.levelMap)
         console.log('searchResultPage', searchResultPage)
         this.books = searchResultPage.list
+        this.sort('default')
         this.totalItemsNum = searchResultPage.total
         this.pageNum = searchResultPage.pageNum
         this.pageSize = searchResultPage.pageSize
@@ -287,18 +321,62 @@ export default {
       }).finally(() => {
         // this.search = ''
       })
+    },
+    chooseDrop(index) {
+      this.unfoldIndex = index
+    },
+    unChooseDrop() {
+      this.unfoldIndex = -1
+    },
+    handleClicked(categoryId) {
+      this.searchBooks(1, categoryId)
+    },
+    sort(sortType) {
+      if (sortType && ['time', 'price', 'default'].includes(sortType)) {
+        console.log('sort: ' + sortType)
+        this.activeName = sortType
+        this.books = this.books.sort(function(a, b) {
+          switch (sortType) {
+            case 'time': {
+              console.log('time')
+              return a.publish_date < b.publish_date ? -1 : 1
+            }
+            case 'price': {
+              console.log('price')
+              return a.price < b.price ? -1 : 1
+            }
+            default: {
+              console.log('default')
+              return a.bookname.localeCompare(b.bookname)
+            }
+          }
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import url("//unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css");
 .search-main {
   background: #f7f7f7;
 }
 
 .search-input {
   margin: 20px 20px 0;
+}
+
+.button-group {
+  margin: 20px 21px 0;
+}
+
+.price-group {
+  margin-top: 5px;
+}
+
+.price-input {
+  max-width: 150px;
 }
 
 .search-list {
@@ -311,10 +389,10 @@ export default {
 }
 
 .category-item {
-  color: black
+  color: black;
 }
 
 .category-item:hover {
-  color: red
+  color: red;
 }
 </style>

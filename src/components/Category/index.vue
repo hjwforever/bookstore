@@ -8,7 +8,7 @@
       >全部商品分类</router-link></el-col>
     </el-row>
     <el-collapse-transition>
-      <div v-if="visible">
+      <div v-show="visible">
         <br>
         <el-row v-for="item in categories" :key="item.cate_id">
           <el-popover
@@ -18,7 +18,7 @@
             :visible-arrow="false"
           >
             <template>
-              <el-row v-for="(subCategory, index) in content.children" :key="subCategory.cate_id">
+              <el-row v-for="(subCategory, index) in content.children" :key="subCategory.cate_id" @mouseenter.native="show">
                 <el-divider v-if="index!==0" />
                 <el-row>
                   <el-row class="popover-title">{{ subCategory.catename }}</el-row>
@@ -32,7 +32,7 @@
                         >{{ _subCategory.catename }}</router-link> -->
                         <router-link
                           :to="'/search?categoryId='+_subCategory.cate_id"
-                        ><el-button type="text">{{ _subCategory.catename }}</el-button>
+                        ><el-button type="text" size="mini" @click="clicked(_subCategory.cate_id)">{{ _subCategory.catename }}</el-button>
                         </router-link>
                       </el-col>
                     </div>
@@ -44,11 +44,11 @@
               <div v-show="false">{{ item }}</div>
               <span><router-link
                 :to="'/search?categoryId='+item.cate_id"
-              >{{ item.catename }}</router-link></span>
+              ><el-button type="text" style="color: white" size="mini" @click="clicked(item.cate_id)">{{ item.catename }}</el-button></router-link></span>
               <el-row v-if="item.children" type="flex">
                 <el-col v-for="item1 in item.children" :key="item1.cate_id" class="subitem"><router-link
                   :to="'/search?categoryId='+item1.cate_id"
-                >{{ item1.catename }}</router-link></el-col>
+                ><el-button type="text" style="color: white" size="mini" @click="clicked(item1.cate_id)">{{ item1.catename }}</el-button></router-link></el-col>
               </el-row>
             </div>
           </el-popover>
@@ -78,17 +78,20 @@ export default {
       visible: true
     }
   },
+  computed: {
+
+  },
   created() {
-    // console.log('categories :', this.categories)
-    // console.log('foldable :', this.foldable)
+    if (this.foldable === true) {
+      setTimeout(() => {
+        this.visible = false
+      }, 500)
+    }
   },
   methods: {
     hadlePopoverShow(event) {
       const item = JSON.parse(event.currentTarget.firstElementChild.innerHTML)
-      // console.log(item)
       const categoryList = { ...this.categories.find(_item => _item.cate_id === item.cate_id) }
-      // console.log({ ...categoryList })
-      // TODO: 获取第三级分类 或者直接渲染第三级分类
       this.content = categoryList
     },
     show() {
@@ -104,6 +107,11 @@ export default {
       } else {
         return
       }
+    },
+    clicked(categoryId) {
+      // console.log('clicked', categoryId)
+      this.visible = false
+      this.$emit('clicked', categoryId)
     }
   }
 }

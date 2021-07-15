@@ -20,3 +20,30 @@ export function getSearch(params) {
 export function getBookInfo(book_id) {
   return request('/item/detail/' + book_id)
 }
+
+// 上架新书
+// {
+//  "cate_id" : "3",
+//  "bookname" : "三体",
+//  "press" : "出版社",
+//  "author" : "作者",
+//  "publish_date" : "2000-05-03",
+//  "isbn" : "13431423514531",
+//  "price" : "12.34",
+//  "pages" : "456",
+//  "store_amount" : "1343",
+//  "s_image" : "",
+//  "b_image" : "",
+//  "description" : "描述"
+// }
+export function uploadNewBook(params, data) {
+  return request({
+    url: '/item/listNewBook',
+    method: 'post',
+    params,
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

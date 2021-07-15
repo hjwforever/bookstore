@@ -76,6 +76,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/upload',
+    component: Layout,
+    name: 'UploadNewBook',
+    children: [
+      {
+        path: '',
+        name: 'UploadNewBook',
+        component: () => import('@/views/upload'),
+        meta: { title: '上传新书', icon: 'upload', rights: ['testRoleName2'] }
+      }
+    ]
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -105,6 +118,7 @@ export const asyncRoutes = [
       }
     ]
   },
+
   // {
   //   path: '/',
   //   component: Layout,
@@ -163,7 +177,7 @@ export const asyncRoutes = [
   //   name: "Template",
   //   meta: { title: "模板管理", icon: "template-manage", rights: ['template'] },
   //   children: [
-  //
+
   //   ]
   // },
 

@@ -38,6 +38,11 @@ export function getCategory(params) {
   })
 }
 
+// 获取所有叶子节点分类列表
+export function getAllLeafCategory() {
+  return request.get('/item/leafCategories')
+}
+
 // 根据分类获取商品列表（包含分类信息或只有商品列表）
 // 是否包含头部分类信息：Boolean isContentCategory （默认值false）
 // 关键词：String keyword（默认值“”）

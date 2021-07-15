@@ -53,7 +53,6 @@
       <el-input v-model="captcha" placeholder="请输入验证码" style="margin-top: 20px; width: 50%" /><el-button :v-loading="captchaLoading" type="success" @click="getCaptcha">获取验证码</el-button>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
-        <el-button @click="getCenterInfo">获取</el-button>
         <el-button type="primary" :v-loading="submitLoading" @click="handleSubmit">确认修改</el-button>
       </span>
     </el-dialog>
@@ -201,9 +200,9 @@ export default {
       if (this.title === '密码' || this.title === 'password') {
         modifyPassword({ password: this.newValue, captcha: this.captcha })
           .then(res => {
-            this.getCenterInfo()
+            // this.getCenterInfo()
             console.log('修改密码成功', res)
-            this.$message.success(res.msg)
+            this.$message.success(res.msg + '，请重新登录')
             this.handleClose()
           })
           .catch(err => {
@@ -213,7 +212,7 @@ export default {
         bindEmail({ email: this.newValue, captcha: this.captcha })
           .then(res => {
             this.getCenterInfo()
-            this.$message.success(res.msg)
+            this.$message.success(res.msg + '，请重新登录')
             console.log('绑定邮箱成功', res)
             this.handleClose()
           })

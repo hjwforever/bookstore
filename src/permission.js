@@ -99,7 +99,7 @@ router.beforeEach(async(to, from, next) => {
     })
     router.addRoutes(accessRoutes)
 
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || to.path.startsWith('/items/')) {
       next()
     } else {
       Message.error('请登录')

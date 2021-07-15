@@ -152,3 +152,15 @@ export function deteleObject(obj) {
   uniques = uniques
   return uniques
 }
+
+export function backtop() {
+  var timer = setInterval(function() {
+    const osTop = document.documentElement.scrollTop || document.body.scrollTop
+    const ispeed = Math.floor(-osTop / 5)
+    document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed
+    this.isTop = true
+    if (osTop === 0) {
+      clearInterval(timer)
+    }
+  }, 30)
+}

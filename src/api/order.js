@@ -5,7 +5,10 @@ import request from '@/utils/request'
 // 订单状态：int status（默认值 -1, 待付款 0, 待发货 1, 待收货 2, 待评价 3）
 // 关键词：keyword  （默认值 ""）
 export function getOrderList(params) {
-  return request.get('/user/order/search', { params })
+  return request({
+    url: '/user/order/search',
+    params
+  })
 }
 
 // 生成订单
@@ -30,13 +33,21 @@ export function getOrderList(params) {
 //      ]
 // }
 export function generateOrder(data) {
-  return request.post('/user/order/generateOrder', { data })
+  return request({
+    url: '/user/order/generateOrder',
+    method: 'post',
+    data
+  })
 }
 
 // 支付订单
 // 订单id：long order_id
 export function pay(data) {
-  return request.post('/user/order/pay', { data })
+  return request({
+    url: '/user/order/pay',
+    method: 'post',
+    data
+  })
 }
 
 // 取消订单
@@ -62,28 +73,44 @@ export function cancelOrder(data) {
 }
 
 // 商品发货
+// 订单id: long order_id
 // 物流名称：String shipping_name
 // 物流单号：String shipping_code
-export function ship(data) {
-  return request.post('/user/order/ship', { data })
+export function ship(params) {
+  return request.post('/user/order/ship', { params: { order_id: params.order_id, shipping_name: params.shipping_name, shipping_code: params.shipping_code }})
 }
 
 // 确认收货
 // 订单id：long order_id
 export function confirmReceipt(data) {
-  return request.post('/user/order/confirmReceipt', { data, transformRequest: [
-    function(data) {
-      let ret = ''
-      for (const it in data) {
-        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+  return request({
+    url: '/user/order/confirmReceipt',
+    method: 'post',
+    data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
       }
-      ret = ret.substring(0, ret.lastIndexOf('&'))
-      return ret
-    }
-  ],
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }})
+    ],
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }})
+}
+
+// 评价订单中的某个商品
+// 订单id：long order_id
+export function commentOrder(data) {
+  console.log('data', data)
+  return request({
+    url: '/user/order/comment',
+    method: 'post',
+    data
+  })
 }
 
 export const ORDER_STATUS = {
@@ -106,5 +133,13 @@ export const ORDER_STATUS = {
   WAIT_COMMENT: {
     label: '待评价',
     index: 3
+  },
+  CANCELED: {
+    label: '已取消',
+    index: 4
+  },
+  COMPLETED: {
+    label: '已完成',
+    index: 5
   }
 }

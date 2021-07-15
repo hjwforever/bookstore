@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <!-- <img :v-lazy="qrcodeImg" alt="qrcode"> -->
+    <!-- <img :src="qrcodeImg" alt="qrcode"> -->
     <el-row :gutter="10">
       <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
         <Category :categories="categories" style="max-height: 250px" />
@@ -9,7 +9,7 @@
         <el-carousel height="250px">
           <el-carousel-item v-for="item in img1" :key="item">
             <!-- <h3 class="small">{{ item }}</h3> -->
-            <img :v-lazy="item" fit="fit" alt="" referrerPolicy="no-referrer">
+            <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
           </el-carousel-item>
         </el-carousel>
       </el-col>
@@ -45,7 +45,7 @@
       <Books :books="categoryBooks.value" :has-leaderboard="true">
         <div slot="header" class="content-header">
           <span>{{ categoryBooks.label }}</span>
-          <!-- <img :v-lazy="headerImages[index].value" :alt="headerImages[index].label" referrerPolicy="no-referrer"> -->
+          <!-- <img :src="headerImages[index].value" :alt="headerImages[index].label" referrerPolicy="no-referrer"> -->
         </div>
       </Books>
     </div>
@@ -124,7 +124,7 @@ export default {
     return {
       recommendNum: 4,
       cate_top: 3,
-      book_top: 10,
+      book_top: 8,
       qrcodeImg: '',
       recommandBooks: [],
       popularCategories: [],
@@ -511,7 +511,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   &-container {
-    background: #f0f3ef;
+    // background: #f0f3ef;
     margin: 30px;
   }
   &-text {

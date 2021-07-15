@@ -1,32 +1,40 @@
 import request from '@/utils/request'
 
-// 绑定邮箱 获取邮箱验证码
-export function getCaptcha(data) {
+// 登录状态绑定邮箱——获取邮箱验证码
+export function getCaptcha(params) {
   return request({
     url: '/user/account/getcaptcha',
     method: 'post',
-    data
+    params
   })
 }
 
-// 绑定邮箱
+// 登录状态绑定邮箱
 // 1. 邮箱：String email
 // 2. 验证码：String captcha
-export function bindEmail(data) {
+export function bindEmail(params) {
   return request({
     url: '/user/account/bindemail',
     method: 'post',
-    data
+    params
   })
 }
 
-// 修改密码 获取验证码
+// 登录状态修改密码——获取邮箱验证码
+export function getPwdCaptcha() {
+  return request({
+    url: '/user/account/getcaptcha?keyword=password',
+    method: 'post'
+  })
+}
+
+// 登录状态修改密码
 // 1. 新密码：String password
 // 2. 验证码：String captcha
-export function changePassword(data) {
+export function modifyPassword(params) {
   return request({
-    url: '/user/account/bindemail',
+    url: '/user/account/updatepassword',
     method: 'post',
-    data
+    params
   })
 }

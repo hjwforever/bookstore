@@ -5,7 +5,7 @@ import store from '@/store'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   withCredentials: true,
-  timeout: 10000
+  timeout: 20000
 })
 
 axios.defaults.withCredentials = true

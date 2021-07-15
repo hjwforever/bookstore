@@ -16,6 +16,11 @@ export function logout() {
   })
 }
 
+// 获取验证码
+export function getCaptcha(keyword, data) {
+  return request.post('/user/account/getcaptcha?keyword=' + keyword, { data })
+}
+
 // 注册
 export function registrationSingle(data) {
   return request({
@@ -25,11 +30,14 @@ export function registrationSingle(data) {
   })
 }
 
+// 注册时获取验证码
+export function getRegisterCaptcha(email) {
+  return request.get('/user/account/getRegisterCaptcha?email=' + email)
+}
+
 // 测试session
 export function testSession() {
-  return request({
-    url: '/user/testsession'
-  })
+  return request.get('/user/testsession')
 }
 
 // 修改用户信息

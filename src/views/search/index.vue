@@ -69,7 +69,6 @@
     </el-row>
     <el-row type="flex" justify="end">
       <el-pagination
-        v-if="topSearchVisible"
         background
         layout="total, prev, pager, next, jumper"
         :page-size="pageSize"

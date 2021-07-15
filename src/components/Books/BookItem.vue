@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     goToDetails() {
-      console.log('查看书籍', { ...this.book })
+      // console.log('查看书籍', { ...this.book })
       // this.$router.push({ path: `/items/${Number.parseInt(item.bookId)}` })
       this.$router.push({ name: 'Items', params: { bookId: this.book.book_id, book: this.book }})
     },
@@ -106,6 +106,7 @@ export default {
 .book-item {
   max-width: 225px;
   max-height: 390px;
+  padding-bottom: 0;
 }
 
 .book-img {

@@ -10,7 +10,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">注册页面</h3>
+        <h3 class="title">网上书城注册页面</h3>
       </div>
 
       <el-form-item prop="uname">
@@ -56,19 +56,19 @@
           tabindex="1"
           auto-complete="on"
         >
-          <el-button slot="append" :disabled="disabled" type="primary" @click="validateEmail">获取验证码</el-button>
+          <el-button slot="append" :v-loading="captchaLoading" :disabled="disabled" type="primary" @click="validateEmail">获取验证码</el-button>
         </el-input>
       </el-form-item>
 
-      <el-form-item v-show="sentValidateRequest" prop="validateCode">
+      <el-form-item v-show="sentValidateRequest" prop="captcha">
         <span class="svg-container">
           <svg-icon icon-class="validateCode" />
         </span>
         <el-input
-          ref="validateCode"
-          v-model="registerForm.validateCode"
+          ref="captcha"
+          v-model="registerForm.captcha"
           placeholder="验证码"
-          name="validateCode"
+          name="captcha"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -124,7 +124,7 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleRegister"
-      >Register</el-button>
+      >注册</el-button>
       <span style="color: white">已有账户?</span><router-link to="/login" style="color: dodgerblue">去登录</router-link>
       <!--      <div class="tips">-->
       <!--        <span style="margin-right:20px;">username: admin</span>-->
@@ -136,6 +136,7 @@
 
 <script>
 import { validEmail, validUName } from '@/utils/validate'
+import { getRegisterCaptcha } from '@/api/user'
 
 export default {
   name: 'Register',
@@ -156,7 +157,7 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6 && value.length > 16) {
+      if (value.length < 6 || value.length > 16) {
         callback(new Error("The password can't less than 6 can not be more than 16 digits"))
       } else {
         callback()
@@ -177,7 +178,7 @@ export default {
         uname: '',
         nickname: '',
         email: '',
-        validateCode: '',
+        captcha: '',
         password: '',
         rePassword: ''
       },
@@ -194,11 +195,15 @@ export default {
         ],
         rePassword: [
           { required: true, trigger: 'blur', validator: validateRePassword }
+        ],
+        captcha: [
+          { required: true, trigger: 'blur', message: '请输入验证码' }
         ]
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      captchaLoading: false
     }
   },
   computed: {
@@ -248,20 +253,23 @@ export default {
       })
     },
     validateEmail() {
-      // TODO: 请求验证码
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          console.log(this.registerForm.email)
-          resolve({
-            data: 'success'
-          })
-        }, 200)
-      }).then(res => {
+      // new Promise((resolve, reject) => {
+      //   setTimeout(() => {
+      //     console.log(this.registerForm.email)
+      //     resolve({
+      //       data: 'success'
+      //     })
+      //   }, 200)
+      // })
+      this.captchaLoading = true
+      getRegisterCaptcha(this.registerForm.email).then(res => {
+        this.captchaLoading = false
         this.sentValidateRequest = true
         const { data } = res
-        console.log(data)
+        console.log('验证码', data)
         this.$message.success('验证码发送成功')
       }).catch(err => {
+        this.captchaLoading = false
         this.sentValidateRequest = false
         const { data } = err
         console.log(data)

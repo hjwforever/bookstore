@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">登录页面</h3>
+        <h3 class="title">网上书城登录页面</h3>
       </div>
 
       <el-form-item prop="username">
@@ -54,7 +54,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >登录</el-button>
       <span style="color: white">没有账号?</span><router-link
         to="/register"
         style="color: dodgerblue"

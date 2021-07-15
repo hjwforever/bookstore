@@ -3,7 +3,7 @@
     <el-card>
       <el-row class="detail-box">
         <el-col :span="12" class="book-image">
-          <img :src="book.s_image || book.b_image" :alt="book.bookname" referrerPolicy="no-referrer">
+          <img :src="book.s_image || book.b_image" :alt="book.bookname" referrerPolicy="no-referrer" style="width: 200px">
         </el-col>
         <el-row class="content">
           <el-col :span="12" class="title">
@@ -23,6 +23,14 @@
           </el-col>
           <el-col :span="12" class="price">
             <span>￥{{ book.price }}</span>
+          </el-col>
+          <el-col :span="12" class="amount">
+            <span>当前库存: {{ book.store_amount }}</span>
+          </el-col>
+          <el-col>
+            <el-card header="简介" body-style="text-align: left" class="desc-card">
+              {{ book.description }}
+            </el-card>
           </el-col>
           <!-- <el-col :span="12" class="adress">
             <span>配送至</span>
@@ -45,11 +53,14 @@
           </el-button-group>
         </el-col>
       </el-row>
+      <el-row>
+        <Comment :book-id="book.book_id" />
+      </el-row>
       <!-- <BookItem :book="book" /> -->
     </el-card>
 
     <el-dialog
-      title="提示"
+      title="生成订单"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
@@ -68,11 +79,12 @@ import { getBookInfo } from '@/api/book'
 import { generateOrder } from '@/api/order'
 import { mapGetters } from 'vuex'
 import NewOrder from '@/views/order/NewOrder'
+import Comment from '@/components/Comment'
 
 export default {
   name: 'Book',
   components: {
-    NewOrder
+    NewOrder, Comment
   },
   props: {
     bookId: {
@@ -131,7 +143,45 @@ export default {
         additional: [],
         services: ['七天无条件退换'],
         desc: ''
-      }
+      },
+      comments: [
+        {
+          'comment_id': 11,
+          'book_id': 2,
+          'user_id': 1,
+          'nickname': 'asdas',
+          'date': '2021-07-12T05:45:36.000+00:00',
+          'content': 'asdadsa',
+          'replyList': [
+            {
+              'reply_id': 6,
+              'comment_id': 11,
+              'user_id': 1,
+              'nickname': 'asdas',
+              'content': 'xchjkhk',
+              'date': '2021-07-12T05:50:13.000+00:00'
+            }
+          ]
+        },
+        {
+          'comment_id': 13,
+          'book_id': 2,
+          'user_id': 1,
+          'nickname': 'asdas',
+          'date': '2021-07-12T16:31:13.000+00:00',
+          'content': '123',
+          'replyList': [
+            {
+              'reply_id': 9,
+              'comment_id': 13,
+              'user_id': 1,
+              'nickname': 'asdas',
+              'content': 'a士大夫地方萨芬',
+              'date': '2021-07-12T16:31:39.000+00:00'
+            }
+          ]
+        }
+      ]
     }
   },
   computed: {
@@ -142,7 +192,10 @@ export default {
     ])
   },
   created() {
-    getBookInfo(this.bookId).then(res => {
+    if (this.$route.params.bookId) {
+      this.bookId = this.$route.params.bookId
+    }
+    getBookInfo(this.bookId || this.$route.params.bookId).then(res => {
       console.log('书籍详情', res)
       this.book = this.geneRate(res.data)
       this.order.name = this.book.bookname
@@ -182,13 +235,29 @@ export default {
     },
     handleSubmit() {
       const order = { ...this.$refs.newOrder.order }
-      console.log('order', order)
+
       if (this.$refs.newOrder.order.addr_id > 0 && String(this.$refs.newOrder.order.buyer_message).length > 0) {
         this.dialogVisible = false
+        order.orderDetailList.push({
+          book_id: this.bookId,
+          amount: order.amount
+        })
+        console.log('order', order)
         generateOrder(order)
           .then(res => {
             console.log('生成订单', res)
-            this.$message.success(res.msg)
+            this.$message.success({
+              message: res.msg,
+              showClose: true,
+              duration: 800,
+              onClose: () => {
+                this.$confirm('是否跳转到订单管理页面').then(() => {
+                  this.$router.push({ path: '/account/order', query: { search: res.data.initOrder.order_number }})
+                })
+              }
+            }).onClose(() => {
+              console.log('hhh')
+            })
           })
           .catch(err => {
             console.log('生成订单失败', err)
@@ -210,6 +279,10 @@ export default {
     text-align: center;
     .book-image {
       padding-left: 20px;
+      // width: 165px;
+      // height: 240px;
+      // max-width: 165px;
+      // max-height: 240px;
     }
     .content {
       .title {
@@ -230,6 +303,10 @@ export default {
 
       .adress {
         color: #666666;
+      }
+
+      .desc-card {
+        margin: 50px 60px;
       }
     }
   }

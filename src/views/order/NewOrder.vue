@@ -3,6 +3,9 @@
     <el-form-item label="商品名称" prop="name">
       <el-input v-model="order.name" disabled />
     </el-form-item>
+    <el-form-item label="购买数量" prop="amount">
+      <el-input-number v-model="order.amount" :min="1" :max="10" label="购买数量" />
+    </el-form-item>
     <el-form-item label="配送地址" prop="addr_id">
       <el-select v-model="order.addr_id" placeholder="请选择配送地址">
         <div v-for="(address, index) in addressesList" :key="index">
@@ -83,11 +86,15 @@ export default {
         delivery: false,
         additional: [],
         services: ['七天无条件退换'],
-        buyer_message: ''
+        buyer_message: '',
+        amount: 1
       },
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' }
+        ],
+        amount: [
+          { required: true, message: '请输入购买数量', trigger: 'blur' }
         ],
         addr_id: [
           { required: true, message: '请选择收货区域', trigger: 'blur' }

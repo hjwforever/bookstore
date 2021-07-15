@@ -1,5 +1,5 @@
 module.exports = {
-  title: '养生书城',
+  title: '网上书城',
 
   /**
    * @type {boolean} true | false

@@ -58,7 +58,7 @@
           <el-button-group v-if="allowedStatus.includes(Number(item.initOrder.status))" style="margin-left: 10px">
             <el-button v-if="item.initOrder.status==0" @click.native="cancelOrder(item.initOrder.order_id)">取消订单</el-button>
             <el-button v-if="item.initOrder.status==0" type="primary" style="margin-top: 10px" @click.native="goToPay(item.initOrder.order_id)">支付订单</el-button>
-            <el-button v-if="item.initOrder.status==1" type="primary" style="margin-top: 10px" @click.native="goToShip(item.initOrder.order_id)">确认已发货</el-button>
+            <el-button v-if="item.initOrder.status==1 && hasAnyRight(['ship'])" type="primary" style="margin-top: 10px" @click.native="goToShip(item.initOrder.order_id)">确认已发货</el-button>
             <el-button v-if="item.initOrder.status==2" type="primary" @click.native="confirmReceipt(item.initOrder.order_id)">确认收货</el-button>
             <el-button v-if="item.initOrder.status==3" type="success" @click.native="goToComment(item)">前往评价</el-button>
             <el-button v-if="item.initOrder.status==5" disabled circle type="success" icon="el-icon-check">订单已完成</el-button>

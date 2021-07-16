@@ -185,11 +185,11 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters([
-    //   'defaultAddress',
-    //   'addressesList',
-    //   'user'
-    // ])
+    ...mapGetters([
+      // 'defaultAddress',
+      // 'addressesList',
+      'user'
+    ])
   },
   created() {
     if (this.$route.params.bookId) {
@@ -227,6 +227,10 @@ export default {
     },
     handleBuy() {
       this.dialogVisible = true
+      if (!this.user.nickname) {
+        this.$message.error('请登录')
+        this.$router.push({ path: '/login?redirect=' + this.$route.path, params: { redirect: this.$route.path }})
+      }
     },
     handleClose() {
       console.log('this.$refs', this.$refs)

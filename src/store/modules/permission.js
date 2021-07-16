@@ -9,8 +9,9 @@ import { RIGHTS } from '@/utils/permission'
  */
 function hasPermission(roles, rights, route) {
   if (route.meta) {
-    return (route.meta.roles ? roles.some(role => route.meta.roles.includes(role.split(':')[0])) : true) &&
-      (route.meta.rights ? rights.some(right => route.meta.rights.includes(right.split(':')[0])) : true)
+    // console.log('rights', rights, rights.some(right => route.meta.rights.includes(right.privname /* right.split(':')[0]*/)))
+    return (route.meta.roles ? roles.some(role => route.meta.roles.includes(role.rolename /* role.split(':')[0]*/)) : true) &&
+      (route.meta.rights ? rights.some(right => route.meta.rights.includes(right.privname /* right.split(':')[0]*/)) : true)
   } else {
   // if (route.meta && route.meta.roles) {
   //   return roles.some(role => route.meta.roles.includes(role.split(":")[0]))

@@ -24,7 +24,7 @@ export function hasAnyRight(value) {
   if (value && value instanceof Array && value.length > 0) {
     const rights = store.getters && store.getters.rights
     return rights.some(right => {
-      return right.rightname === 'allRights' || value.includes(right.rightname)
+      return right.privname === 'allRights' || value.includes(right.privname)
     })
   } else {
     console.error(`need rights! Like v-rights="['user:view','role:view']"`)
@@ -46,5 +46,7 @@ export const RIGHTS = {
   RIGHT_VIEW: 'right:view',
   RIGHT_EDIT: 'right:edit',
   LOG: 'log',
+  UPLOAD: 'upload',
+  SHIP: 'ship',
   ALL_RIGHTS: 'allRights'
 }

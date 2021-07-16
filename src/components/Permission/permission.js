@@ -30,7 +30,7 @@ function checkHasAnyRight(el, binding) {
       const permissionRights = value
 
       const hasPermission = rights.some(right => {
-        return permissionRights.includes(right.rightname)
+        return permissionRights.includes(right.privname)
       })
 
       if (!hasPermission) {

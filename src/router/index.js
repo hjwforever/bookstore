@@ -84,7 +84,7 @@ export const constantRoutes = [
         path: '',
         name: 'UploadNewBook',
         component: () => import('@/views/upload'),
-        meta: { title: '上传新书', icon: 'upload', rights: ['testRoleName2'] }
+        meta: { title: '上传新书', icon: 'upload', rights: ['upload'] }
       }
     ]
   },

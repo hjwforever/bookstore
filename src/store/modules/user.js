@@ -258,6 +258,7 @@ const actions = {
     })
   },
 
+  // update address
   updateAddress({ commit }) {
     return new Promise((resolve, reject) => {
       getAddressList()

@@ -19,7 +19,7 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // const currentEmail = getEmail()
-  const username = store.getters.name
+  const username = store.getters.nickname
   // if (currentEmail) {
   if (username) {
     if (to.path === '/login') {

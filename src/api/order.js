@@ -77,8 +77,13 @@ export function cancelOrder(data) {
 // 物流名称：String shipping_name
 // 物流单号：String shipping_code
 export function ship(params) {
-  return request.post('/user/order/ship', { params: { order_id: params.order_id, shipping_name: params.shipping_name, shipping_code: params.shipping_code }})
+  return request({
+    url: '/user/order/ship',
+    method: 'post',
+    params
+  })
 }
+// : { order_id: params.order_id, shipping_name: params.shipping_name, shipping_code: params.shipping_code }
 
 // 确认收货
 // 订单id：long order_id

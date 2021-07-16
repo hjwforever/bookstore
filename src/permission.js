@@ -82,12 +82,12 @@ router.beforeEach(async(to, from, next) => {
       'rolename': 'tourist',
       'roleid': 9,
       'description': '游客'
-    }].map(role => role.rolename)
+    }]// .map(role => role.rolename)
     const rights = [{
       'priv_id': 1,
       'privname': 'priv1',
       'description': '权限1'
-    }].map(right => right.privname)
+    }]// .map(right => right.privname)
 
     store.commit('user/SET_ROLES', roles)
     store.commit('user/SET_RIGHTS', rights)

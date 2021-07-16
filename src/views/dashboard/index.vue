@@ -299,8 +299,8 @@ export default {
 
       for (const key in popularCategories) {
         if (Object.hasOwnProperty.call(popularCategories, key)) {
-          let element = popularCategories[key]
-          element = element.map(item => this.geneRate(item))
+          const element = popularCategories[key]
+          // element = element.map(item => this.geneRate(item))
           console.log(key, element)
           this.popularCategories.push({
             label: key,
@@ -310,7 +310,7 @@ export default {
       }
       console.log('categories', this.categories)
       console.log('popularCategories', this.popularCategories)
-      console.log('recommandBooks', this.recommandBooks.map(item => this.geneRate(item)))
+      console.log('recommandBooks', this.recommandBooks)
     }).catch(err => {
       console.log(err)
       const data = {
@@ -471,7 +471,7 @@ export default {
 
       console.log('Mock categories', this.categories)
       console.log('Mock popularCategories', this.popularCategories)
-      console.log('Mock recommandBooks', this.recommandBooks.map(item => this.geneRate(item)))
+      console.log('Mock recommandBooks', this.recommandBooks)
     })
     // getCategory().then(res => {
     //   console.log('获取分类列表', res)

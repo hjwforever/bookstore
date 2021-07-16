@@ -118,7 +118,7 @@ export default {
     }
   },
   created() {
-    this.testSessionVisable = process.env.NODE_ENV === 'development'
+    // this.testSessionVisable = process.env.NODE_ENV === 'development'
   },
   methods: {
     showPwd() {

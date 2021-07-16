@@ -2,6 +2,7 @@ import { login, logout, registrationSingle, getInfo } from '@/api/user'
 import { resetRouter } from '@/router'
 import { Message } from 'element-ui'
 import { removeEmail, setEmail, removeJSessionID } from '@/utils/auth'
+import { getAddressList } from '@/api/address'
 
 const getDefaultState = () => {
   return {
@@ -254,6 +255,21 @@ const actions = {
       removeJSessionID()
       commit('RESET_STATE')
       resolve()
+    })
+  },
+
+  updateAddress({ commit }) {
+    return new Promise((resolve, reject) => {
+      getAddressList()
+        .then(res => {
+          console.log('地址更新成功', res)
+          commit('SET_ADDRESS', res.data)
+          resolve(res)
+        })
+        .catch(err => {
+          console.log('地址更新失败', err)
+          reject(err)
+        })
     })
   }
 }

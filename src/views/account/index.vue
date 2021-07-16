@@ -19,12 +19,29 @@
           </el-row>
         </div>
         <div v-else class="item-box">
-          {{ returnDeepName(key, deepDic).label }}
+
+          <el-row>
+            <el-col :span="11"><span>{{ returnDeepName(key, deepDic).label }}  </span></el-col>
+            <el-col v-if="returnName(key).editable" :span="11">
+              <el-button type="primary" icon="el-icon-plus" @click="beforeAddNemItem(key)">新增</el-button>
+            </el-col>
+          </el-row>
           <el-card v-for="(_item, _key, _index) in item" :key="_index" class="item-card">
+            <el-row v-if="returnName(key).editable" type="flex" justify="end">
+              <el-button-group>
+                <el-button type="success" icon="el-icon-edit" @click="handleEditSubItem(key,_item)">编辑</el-button>
+                <el-button type="danger" icon="el-icon-delete" @click="handleDeleteSubItem(key,_item)">删除</el-button>
+              </el-button-group>
+            </el-row>
             <el-row v-for="(__item, __key, __index) in _item" :key="__index" type="flex">
               <el-col v-if="returnDeepName(__key, returnName(key).label).label" :span="6" class="message-label">{{ returnDeepName(__key, returnName(key).label).label + ':   ' }}</el-col>
               <el-col v-if="returnDeepName(__key, returnName(key).label).label" :span="12" class="message-content">
-                {{ __item }}
+                <div v-if="__item===true || __item===false">
+                  <el-button :type="__item?'success':'danger'" :icon="__item?'el-icon-check': 'el-icon-close'" size="mini" circle @click="defaultAddressToogle(_item)" />
+                </div>
+                <div v-else>
+                  {{ __item }}
+                </div>
               </el-col>
             </el-row>
           </el-card>
@@ -56,6 +73,44 @@
         <el-button type="primary" :v-loading="submitLoading" @click="handleSubmit">确认修改</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog :title="addressTitle" :visible.sync="addressFormVisible">
+      <el-form :model="addressForm">
+        <el-form-item label="收货人姓名" :label-width="formLabelWidth">
+          <el-input v-model="addressForm.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="电话号码" :label-width="formLabelWidth">
+          <el-input v-model="addressForm.phone" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="国家" :label-width="formLabelWidth">
+          <el-select v-model="addressForm.country" placeholder="请选择">
+            <el-option
+              v-for="item in cities"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地区" :label-width="formLabelWidth">
+          <v-distpicker @selected="onAreaSelected" />
+        </el-form-item>
+        <el-form-item label="详细地址" :label-width="formLabelWidth">
+          <el-input v-model="addressForm.detail_address" autocomplete="off" />
+        </el-form-item>
+        <el-form-item v-if="addressTitle==addressTitleList[1]" label="设为默认地址" :label-width="formLabelWidth">
+          <!-- 红色 inactive-color="#ff4949" -->
+          <el-switch
+            v-model="addressForm.default_addr"
+            active-color="#13ce66"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addressFormVisible = false">取 消</el-button>
+        <el-button :v-loading="addressBtnLoading" type="primary" @click="handleFormSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -63,13 +118,14 @@
 import { mapGetters } from 'vuex'
 import { getCaptcha, bindEmail, getPwdCaptcha, modifyPassword } from '@/api/auth'
 import { getUserCenter } from '@/api/user'
+import { getAddressList, createAddress, modifyAddress, deleteAddress, setAddressAsDefault } from '@/api/address'
 import { validEmail } from '@/utils/validate'
 
 export default {
   name: 'MyAccount',
   data() {
     return {
-      editableKeyList: ['email', 'addressesList', 'password'],
+      editableKeyList: ['email', 'addressesList', 'password', 'addressesList'],
       deepDic: {
         roles: '角色列表',
         rights: '权限列表',
@@ -97,24 +153,60 @@ export default {
           'receiver_district': '区/县',
           'detail_address': '详细地址',
           'country': '国家',
-          'default_addr': '是否为默认地址'
+          'default_addr': '为默认地址'
         }
       },
+      cities: [
+        {
+          value: '中国',
+          label: '中国'
+        },
+        {
+          value: '美国',
+          label: '美国'
+        },
+        {
+          value: '日本',
+          label: '日本'
+        }
+      ],
+      addressTitleList: ['新增收货地址', '编辑收货地址'],
+      addressTitle: '新增收货地址',
       dialogVisible: false,
+      formLabelWidth: '120px',
+      addressFormVisible: false,
+      addressForm: {
+        'addr_id': -1,
+        'name': '',
+        'phone': '',
+        'zip_code': '',
+        'country': '中国',
+        'receiver_state': '',
+        'receiver_city': '',
+        'receiver_district': '',
+        'detail_address': '详细地址',
+        'default_addr': false
+      },
+      addressBtnLoading: false,
       title: '',
       newValue: '',
       captchaLoading: false,
       submitLoading: false,
       captcha: '',
-      disabled: false
+      disabled: false,
+      addrId: -1
     }
   },
   computed: {
     ...mapGetters([
       'user'
-    ])
+    ]),
+    returnArea() {
+      return this.addressForm.zip_code
+    }
   },
   created() {
+    // this.$store.dispatch('user/updateAddress')
   },
   methods: {
     returnName(originName) {
@@ -135,6 +227,189 @@ export default {
     handleEdit(key) {
       this.title = this.returnName(key).label
       this.dialogVisible = true
+    },
+    beforeAddNemItem(key) {
+      switch (key) {
+        case 'addressesList': {
+          this.addressTitle = this.addressTitleList[0]
+          this.addressFormVisible = true
+          break
+        }
+      }
+    },
+    onAreaSelected(area) {
+      // console.log('area', area)
+      this.addressForm.receiver_state = area.province.value
+      this.addressForm.receiver_city = area.city.value
+      this.addressForm.receiver_district = area.area.value
+      this.addressForm.zip_code = area.area.code
+      console.log('this.addressForm', this.addressForm)
+    },
+    clearAddressForm() {
+      this.addressForm = {
+        'name': '',
+        'phone': '',
+        'zip_code': '',
+        'country': '中国',
+        'receiver_state': '',
+        'receiver_city': '',
+        'receiver_district': '',
+        'detail_address': '详细地址',
+        'default_addr': false
+      }
+      this.addressTitle = this.addressTitleList[0]
+    },
+    defaultAddressToogle(item) {
+      console.log(item)
+      setAddressAsDefault({
+        addr_id: item.addr_id
+      })
+        .then(res => {
+          this.$store.dispatch('user/updateAddress')
+          console.log('设为默认地址成功', res)
+          this.$message.success('设为默认地址成功')
+        })
+        .catch(err => {
+          console.log('设为默认地址失败', err)
+          this.$message.error('设为默认地址失败')
+        })
+    },
+    handleFormSubmit() {
+      switch (this.addressTitle) {
+        case this.addressTitleList[0]: {
+          console.log('0 新增', this.addressTitle)
+          this.handleNweAddress()
+          break
+        }
+        case this.addressTitleList[1]: {
+          console.log('1 编辑', this.addressTitle)
+          this.handleEditAddress()
+          break
+        }
+      }
+    },
+    handleNweItem(key) {
+      // this.addressFormVisible = false
+    },
+    handleNweAddress() {
+      this.addressBtnLoading = true
+      const form = this.addressForm
+      const { default_addr } = form
+      console.log('form', form, 'default_addr', default_addr)
+      createAddress(form)
+        .then(res => {
+          this.$store.dispatch('user/updateAddress')
+          // TODO: 新建地址时设为默认
+          // if (default_addr) {
+          //   setAddressAsDefault()
+          //     .then(res => {
+          //       this.$store.dispatch('user/updateAddress')
+          //       console.log('设为默认地址成功', res)
+          //     })
+          //     .catch(err => {
+          //       console.log('设为默认地址失败', err)
+          //     })
+          // } else {
+          //   this.$store.dispatch('user/updateAddress')
+          // }
+          console.log('新建地址成功', res)
+          this.$message.success('新建地址成功')
+        })
+        .catch(err => {
+          console.log('新建地址失败', err)
+          this.$message.error('新建地址失败')
+        })
+        .finally(() => {
+          this.clearAddressForm()
+          this.addressFormVisible = false
+          this.addressBtnLoading = false
+        })
+    },
+    handleEditAddress() {
+      this.addressBtnLoading = true
+      const form = this.addressForm
+      const { default_addr } = form
+      console.log('form', form, 'default_addr', default_addr)
+      modifyAddress(form)
+        .then(res => {
+          if (default_addr) {
+            setAddressAsDefault({
+              addr_id: form.addr_id
+            })
+              .then(res => {
+                this.$store.dispatch('user/updateAddress')
+                console.log('设为默认地址成功', res)
+              })
+              .catch(err => {
+                console.log('设为默认地址失败', err)
+              })
+          } else {
+            this.$store.dispatch('user/updateAddress')
+          }
+          console.log('编辑地址成功', res)
+          this.$message.success('编辑地址成功')
+        })
+        .catch(err => {
+          console.log('编辑地址失败', err)
+          this.$message.error('编辑地址失败')
+        })
+        .finally(() => {
+          this.clearAddressForm()
+          this.addressFormVisible = false
+          this.addressBtnLoading = false
+        })
+    },
+    handleEditSubItem(key, item) {
+      this.addressTitle = this.addressTitleList[1]
+      this.addressForm.name = this.user.nickname
+      for (const key in item) {
+        if (Object.hasOwnProperty.call(item, key)) {
+          const element = item[key]
+          this.addressForm[key] = element
+        }
+      }
+      this.addressFormVisible = true
+      console.log('编辑操作 ', key, item)
+      switch (key) {
+        case 'addressesList': {
+          // this.addressForm.addr_id = item
+          break
+        }
+      }
+    },
+    handleDeleteSubItem(key, item) {
+      console.log('删除操作 ', key, item)
+      switch (key) {
+        case 'addressesList': {
+          this.$confirm('此操作将删除该地址, 是否继续?', '删除地址', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            deleteAddress({
+              addr_id: item.addr_id
+            })
+              .then(res => {
+                this.$store.dispatch('user/updateAddress')
+
+                console.log('删除结果', res)
+                this.$message({
+                  type: 'success',
+                  message: '地址删除成功!'
+                })
+              })
+              .catch(err => {
+                console.log('删除失败', err)
+              })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+          break
+        }
+      }
     },
     getCaptcha() {
       this.captchaLoading = true

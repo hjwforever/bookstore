@@ -48,7 +48,7 @@
       <el-row>
         <el-col :span="24" class="button-group">
           <el-button-group>
-            <el-button type="sucess" @click.native="addToCart">加入购物车</el-button>
+            <!-- <el-button type="sucess" @click.native="addToCart">加入购物车</el-button> -->
             <el-button type="primary" @click.native="handleBuy">立即购买</el-button>
           </el-button-group>
         </el-col>
@@ -185,11 +185,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'defaultAddress',
-      'addressesList',
-      'user'
-    ])
+    // ...mapGetters([
+    //   'defaultAddress',
+    //   'addressesList',
+    //   'user'
+    // ])
   },
   created() {
     if (this.$route.params.bookId) {
@@ -199,7 +199,7 @@ export default {
       console.log('书籍详情', res)
       this.book = this.geneRate(res.data)
       this.order.name = this.book.bookname
-      this.order.origin = this.defaultAddress.detail_address
+      // this.order.origin = this.defaultAddress.detail_address
     })
   },
   methods: {

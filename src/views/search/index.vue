@@ -63,7 +63,7 @@
     <el-row type="flex" :gutter="20" style="flex-wrap: wrap;" class="search-list">
       <el-col v-for="(book,index) in books" :key="index" :span="4" :xs="6" :sm="4" :xl="3" class="book-item">
         <el-card shadow="hover">
-          <BookItem :book="geneRate(book)" bstyle="height: 315px;width: 185px;" />
+          <BookItem :book="book" bstyle="height: 315px;width: 185px;" />
         </el-card>
       </el-col>
     </el-row>
@@ -334,15 +334,15 @@ export default {
         this.books = this.books.sort(function(a, b) {
           switch (sortType) {
             case 'time': {
-              console.log('time')
+              // console.log('time')
               return a.publish_date < b.publish_date ? -1 : 1
             }
             case 'price': {
-              console.log('price')
+              // console.log('price')
               return a.price < b.price ? -1 : 1
             }
             default: {
-              console.log('default')
+              // console.log('default')
               return a.bookname.localeCompare(b.bookname)
             }
           }

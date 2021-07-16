@@ -6,7 +6,7 @@
         <Category :categories="categories" style="max-height: 250px" />
       </el-col>
       <el-col :xs="24" :sm="18" :md="12" :lg="10" :xl="10" class="item">
-        <el-carousel height="250px">
+        <el-carousel height="175px">
           <el-carousel-item v-for="item in img1" :key="item">
             <!-- <h3 class="small">{{ item }}</h3> -->
             <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
@@ -16,23 +16,26 @@
       <el-col :xs="24" :sm="18" :md="12" :lg="8" :xl="8" class="aside-items">
         <el-col class="item">
           <el-carousel height="120px">
-            <el-carousel-item v-for="item in 4" :key="item">
-            <!-- <h3 class="small">{{ item }}</h3> -->
+            <el-carousel-item v-for="item in img2" :key="item">
+              <!-- <h3 class="small">{{ item }}</h3> -->
+              <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
             </el-carousel-item>
           </el-carousel>
         </el-col>
         <el-row :gutter="10">
           <el-col :xs="12" :sm="12">
             <el-carousel height="120px">
-              <el-carousel-item v-for="item in 4" :key="item">
+              <el-carousel-item v-for="item in img3" :key="item">
                 <!-- <h3 class="small">{{ item }}</h3> -->
+                <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
               </el-carousel-item>
             </el-carousel>
           </el-col>
           <el-col :xs="12" :sm="12">
             <el-carousel height="120px">
-              <el-carousel-item v-for="item in 4" :key="item">
+              <el-carousel-item v-for="item in img4" :key="item">
                 <!-- <h3 class="small">{{ item }}</h3> -->
+                <img :src="item" fit="fit" alt="" referrerPolicy="no-referrer">
               </el-carousel-item>
             </el-carousel>
           </el-col>
@@ -146,24 +149,24 @@ export default {
       content: {},
       books: testItems,
       img1: [
-        '//img7.xinhuashudian.com/images/2021/06/30/44619814-33e9-4856-a6b6-b78c3e8718f4.jpg',
-        'http://img2.xinhuashudian.com/images/2021/06/23/959cb415-80dc-4328-9368-10b89c0b0953.jpg',
-        'https://img7.xinhuashudian.com/images/2021/06/23/582b2805-eba2-4c80-ba4e-b79c682708bc.jpg',
-        '//z3.ax1x.com/2021/04/11/cwKLLj.png?imageView2/1/w/80/h/80',
-        'http://img2.xinhuashudian.com/bookbasepic/C/00085/710401604X0858609-fm.jpg'
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/5d9570c0-9d40-49cf-b87a-ef4d87ee9693.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/1c84634d-8263-43f1-bf84-3c6d45ed72b7.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/c8c7af01-eb58-425d-86e6-b7b701a42dc8.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/916528de-2f1f-4363-a773-459529fdf0d9.png',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/cfffce7c-dccb-4933-b124-b2f6f88fe48e.jpg'
       ],
       img2: [
-        'https://img2.xinhuashudian.com/images/2021/06/15/7af0941d-5c2d-43e3-9e5b-dd1f2dc48429.png',
-        'https://img7.xinhuashudian.com/images/2021/06/04/916040ba-632e-458e-88ce-72d7b0899c45.jpg',
-        'https://img9.xinhuashudian.com/images/2021/04/18/80d7db66-413c-4008-9471-ee33363df0fe.jpg'
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/2804693b-b512-4957-83cc-453ff9bb6888.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/01f4ef24-70fb-4427-8f55-ecc5a7c199f1.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/249a1ea6-9d46-4bc3-b856-4b148a4835b0.png'
       ],
       img3: [
-        'https://img5.xinhuashudian.com/images/2021/07/02/0d301ac9-d3c9-4ca2-b196-f618fcc5a026.jpg',
-        'https://img5.xinhuashudian.com/images/2021/06/24/8efc18bc-6c17-4499-a740-56b04ffa8185.jpg'
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/5c30768f-690e-46eb-aea1-59cd86d8e536.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/c87bce9d-e9df-48a5-a618-08defade31e5.jpg'
       ],
       img4: [
-        'https://img8.xinhuashudian.com/images/2021/06/11/57c61779-86ff-4251-827f-bfebd6f5df4c.jpg',
-        'https://img7.xinhuashudian.com/images/2021/03/19/25c3beaf-b3a0-44ef-be51-564a2893dfdb.jpg'
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/2550f5d0-b5d1-4735-974a-54a6d6499c58.jpg',
+        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/4e8eab44-658f-484f-b085-eb3e054cc142.jpg'
       ],
       categories: [
         {
@@ -299,8 +302,8 @@ export default {
 
       for (const key in popularCategories) {
         if (Object.hasOwnProperty.call(popularCategories, key)) {
-          const element = popularCategories[key]
-          // element = element.map(item => this.geneRate(item))
+          let element = popularCategories[key]
+          element = element.map(item => this.geneRate(item))
           console.log(key, element)
           this.popularCategories.push({
             label: key,
@@ -528,6 +531,7 @@ export default {
 
 .item {
   margin: 0 0 10px;
+  width: 400px;
 }
 
 .subitem {

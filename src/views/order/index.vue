@@ -118,6 +118,7 @@
 import { getOrderList, ORDER_STATUS, pay, ship, cancelOrder, confirmReceipt, commentOrder } from '@/api/order'
 import OrderComment from './OrderComment.vue'
 import { backtop } from '@/utils'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Order',
@@ -128,7 +129,6 @@ export default {
     return {
       title: '订单管理',
       search: '',
-      searchAll: false,
       status: '-1',
       ORDER_STATUS: ORDER_STATUS,
       orderList: [],
@@ -146,6 +146,7 @@ export default {
     }
   },
   created() {
+    console.log('this.rights', this.rights)
     this.search = this.$route.query.search || ''
     this.searchOrders(1)
     // for (const key in ORDER_STATUS) {
@@ -154,6 +155,17 @@ export default {
     //     console.log(key, element)
     //   }
     // }
+  },
+  computed: {
+    ...mapGetters([
+      'rights'
+    ]),
+    searchAll() {
+      const allowedRights = ['allRights', 'ship']
+      return this.rights.some(right => {
+        return allowedRights.includes(right.privname)
+      }) || false
+    }
   },
   methods: {
     searchOrders(pageNum = 1) {

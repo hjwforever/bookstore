@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = ' 养生书城 '
+const name = ' 网上书城 '
 
 const port = process.env.port || process.env.npm_config_port || 8080
 
@@ -21,7 +21,7 @@ module.exports = {
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'http://bookstore.makerhu.com:8081',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

@@ -198,19 +198,24 @@ export default {
             .then(res => {
               this.loading = false
               console.log('上传书籍', res)
+              this.$message.success('上传书籍成功')
+              this.resetForm('form')
             })
             .catch(err => {
               this.loading = false
               console.log('上传书籍失败', err)
+              this.$message.error('上传书籍失败 ' + err.msg)
             })
         } else {
           console.log('error submit!!')
+          this.$message.info('请正确填写书籍信息并选择封面图片')
           return false
         }
       })
     },
     resetForm(formName) {
       this.loading = false
+      this.fileList = []
       this.$refs[formName].resetFields()
     },
     onSubmit() {

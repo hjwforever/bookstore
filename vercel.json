@@ -1,8 +1,5 @@
 {
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/proxy"
-    }
+    { "source": "/api/:match*", "destination": "http://bookstore-server.aruoxi.com/:match*" }
   ]
 }

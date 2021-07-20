@@ -21,7 +21,7 @@ module.exports = {
     open: true,
     proxy: {
       '/api': {
-        target: 'http://bookstore.makerhu.com:8081',
+        target: 'http://bookstore-server.aruoxi.com', // 开发环境下将请求代理到服务器地址，可替换为相应后端项目的地址
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

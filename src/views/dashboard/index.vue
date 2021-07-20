@@ -149,24 +149,24 @@ export default {
       content: {},
       books: testItems,
       img1: [
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/5d9570c0-9d40-49cf-b87a-ef4d87ee9693.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/1c84634d-8263-43f1-bf84-3c6d45ed72b7.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/c8c7af01-eb58-425d-86e6-b7b701a42dc8.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/916528de-2f1f-4363-a773-459529fdf0d9.png',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/cfffce7c-dccb-4933-b124-b2f6f88fe48e.jpg'
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/5d9570c0-9d40-49cf-b87a-ef4d87ee9693.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/1c84634d-8263-43f1-bf84-3c6d45ed72b7.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/c8c7af01-eb58-425d-86e6-b7b701a42dc8.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/916528de-2f1f-4363-a773-459529fdf0d9.png',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/cfffce7c-dccb-4933-b124-b2f6f88fe48e.jpg'
       ],
       img2: [
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/2804693b-b512-4957-83cc-453ff9bb6888.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/01f4ef24-70fb-4427-8f55-ecc5a7c199f1.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/249a1ea6-9d46-4bc3-b856-4b148a4835b0.png'
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/2804693b-b512-4957-83cc-453ff9bb6888.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/01f4ef24-70fb-4427-8f55-ecc5a7c199f1.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/249a1ea6-9d46-4bc3-b856-4b148a4835b0.png'
       ],
       img3: [
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/5c30768f-690e-46eb-aea1-59cd86d8e536.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/c87bce9d-e9df-48a5-a618-08defade31e5.jpg'
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/5c30768f-690e-46eb-aea1-59cd86d8e536.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/c87bce9d-e9df-48a5-a618-08defade31e5.jpg'
       ],
       img4: [
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/2550f5d0-b5d1-4735-974a-54a6d6499c58.jpg',
-        'http://bookstore.makerhu.com:8081/images/bookFace/2021/7/16/4e8eab44-658f-484f-b085-eb3e054cc142.jpg'
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/2550f5d0-b5d1-4735-974a-54a6d6499c58.jpg',
+        'http://bookstore-server.aruoxi.com/images/bookFace/2021/7/16/4e8eab44-658f-484f-b085-eb3e054cc142.jpg'
       ],
       categories: [
         {

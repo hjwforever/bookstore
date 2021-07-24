@@ -3,7 +3,7 @@
 
 [demo网址1](https://bookstore.aruoxi.com)、[demo网址2](https://bookstore-aruoxi.vercel.app/)
 
-> 请配合[后端项目](https://gitee.com/org-bookstore/online_bookstore_backend)使用
+> 请配合[后端项目](https://gitee.com/org-bookstore/online_bookstore_backend)使用  
 > 书籍爬虫项目地址: [hjwforever/bookCrawler](https://github.com/hjwforever/bookCrawler)
 
 ## Set Up

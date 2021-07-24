@@ -1,6 +1,8 @@
 # boostore
 大数据智能推荐图书商城前端
 
+[在线网址1](https://bookstore.aruoxi.com)、[在线网址2](https://bookstore-aruoxi.vercel.app/)
+
 >请配合[后端项目](https://gitee.com/org-bookstore/online_bookstore_backend)使用
 
 ## Set Up

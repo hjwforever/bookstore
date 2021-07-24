@@ -1,9 +1,10 @@
 # boostore
 大数据智能推荐图书商城前端
 
-[在线网址1](https://bookstore.aruoxi.com)、[在线网址2](https://bookstore-aruoxi.vercel.app/)
+[demo网址1](https://bookstore.aruoxi.com)、[demo网址2](https://bookstore-aruoxi.vercel.app/)
 
->请配合[后端项目](https://gitee.com/org-bookstore/online_bookstore_backend)使用
+> 请配合[后端项目](https://gitee.com/org-bookstore/online_bookstore_backend)使用
+> 书籍爬虫项目地址: [hjwforever/bookCrawler](https://github.com/hjwforever/bookCrawler)
 
 ## Set Up
 
@@ -19,7 +20,8 @@ npm run dev
 ## Docker
 
 ### 镜像地址
-前端vue项目docker镜像: [aruoxi/bookstore-frontend](https://hub.docker.com/repository/docker/aruoxi/bookstore-frontend)
+前端vue项目docker镜像: [aruoxi/bookstore-frontend](https://hub.docker.com/repository/docker/aruoxi/bookstore-frontend)  
+
 后端springboot项目docker镜像: [aruoxi/bookstore-backend](https://hub.docker.com/repository/docker/aruoxi/bookstore-backend)
 
 ### docker-compose 参考配置
